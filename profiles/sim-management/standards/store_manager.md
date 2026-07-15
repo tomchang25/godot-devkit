@@ -13,9 +13,7 @@ this standard decides who implements it and how state is grouped.
 
 ### Store — the Model
 
-A **Store** owns one domain's live fields and is the only thing that may write
-them. It extends `StoreBase` (a `RefCounted`) and lives in
-`common/gameplay/store/`.
+A **Store** owns one domain's live fields and is the only thing that may write them. It extends `StoreBase` (a `RefCounted`) and lives in `game/domain/store/`.
 
 1. **State** — private backing fields (`_cash`), exposed read-only via getters
    (`var cash: int: get: return _cash`). No external setter ⇒ no external write path.
@@ -30,7 +28,7 @@ A Store has **no reference to its System, to scenes, or to other Stores**. It is
 pure, testable state slice. Persisting Stores override all four save methods;
 session-scoped Stores (cleared each run, never saved) override none.
 
-Reference: `common/gameplay/store/economy_store.gd`, `inventory_store.gd`,
+Reference: `game/domain/store/economy_store.gd`, `inventory_store.gd`,
 `store_base.gd`.
 
 ### System — the orchestration
@@ -92,7 +90,7 @@ func from_dict(data: Dictionary) -> void:
 
 ## Checklist for a new domain
 
-1. Store script at `common/gameplay/store/<domain>_store.gd`, `extends StoreBase`.
+1. Store script at `game/domain/store/<domain>_store.gd`, `extends StoreBase`.
 2. Private fields + read-only getters. Mutators are the only write path and guard
    invariants.
 3. `section_id()`, `to_dict()` (with `"_version"`), `from_dict()` (migrate → read),

@@ -1,10 +1,10 @@
 # Project Structure — action-rpg addendum
 
-Adds to the base `project_structure.md`. The action-rpg preset replaces the sim
-preset's `common/gameplay/{store,snapshot,service,entry}` archetype tree with an
-entity/component layout.
+Adds to the base `project_structure.md`. The action-rpg preset replaces the sim preset's game-owned domain archetype tree with an entity/component layout.
 
-## `common/gameplay/` — components & entities
+## `common/gameplay/` — reusable components & entity foundations
+
+Use this tree only for capability components and entity foundations that can transfer to another game without feature-specific changes:
 
 ```
 common/gameplay/
@@ -14,6 +14,8 @@ common/gameplay/
 
 A Component is named for its capability (`Health`), never its host (`PlayerHp`), and
 is mounted in an entity `.tscn`, not added from code at runtime.
+
+Being a Component is not enough to make a script reusable. Components tied to a concrete arena, grid, enemy family, combat-feedback vocabulary, authored resource, or feature timing contract stay under their owning `game/<feature>/` tree. An entity base belongs in `common/gameplay/entity/` only when it is independent of concrete feature rules.
 
 ## `global/autoloads/` — real-time infra
 
@@ -36,3 +38,5 @@ game/
 Entity scenes are composed scenes (a body root with Component children). Cross-entity,
 per-frame behaviour lives in a driver scene (`arena_scene.gd`), not on the entities.
 There is no Store/System layer — entity state lives on the entity's components.
+
+Feature-local components may use a `components/` subfolder when the feature has enough capability scripts to justify grouping. Entity-specific pieces stay beside their owning entity unless a second feature demonstrates a shared contract.

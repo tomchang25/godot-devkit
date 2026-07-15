@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- Move the simulation-management preset's game-specific runtime archetype tree from reusable infrastructure into a game-owned domain layer.
+- Clarify that action-RPG components and entity bases belong in reusable infrastructure only when their contracts are independent of a concrete feature.
+- Preserve each profile's runtime ownership model while making feature ownership, authored content, and cross-project reuse distinct placement concerns.
+
 ## 0.2.0
 
 - Rebuild canonical governance from Tickstrike's pre-foundation rules while generalizing project-specific examples and paths.

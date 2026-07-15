@@ -102,8 +102,10 @@ and position into the save and writes them back on load. The base save *contract
 
 ## Naming & folders
 
-- Component scripts: `common/gameplay/components/<capability>.gd`, `class_name` in
-  PascalCase (`Health`, `Hitbox`, `Hurtbox`).
-- Entity base + shared entity pieces: `common/gameplay/entity/`.
-- Entity scenes and combat features: `game/<feature>/`.
+- Reusable capability components: `common/gameplay/components/<capability>.gd`, with `class_name` in PascalCase (`Health`, `Hitbox`, `Hurtbox`).
+- Feature-specific components: beside their owning entity or under `game/<feature>/components/` when several components justify grouping.
+- Reusable entity bases and shared entity pieces: `common/gameplay/entity/`, but only when their contracts contain no concrete feature rules.
+- Concrete entity scenes, entity-specific behavior, combat presentation, and driver scenes: `game/<feature>/`.
 - A Component is named for its capability, not its host (`Health`, never `PlayerHp`).
+
+Classify by dependency, not by shape: a Node can satisfy the Component contract and still be feature-owned. If it depends on a specific arena, grid, enemy vocabulary, timing model, feedback view, or authored gameplay resource, it belongs to that feature. Promote it to `common/gameplay/` only after its contract is demonstrably independent of those dependencies.

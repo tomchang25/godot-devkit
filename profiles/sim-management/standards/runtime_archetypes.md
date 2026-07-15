@@ -1,10 +1,8 @@
 # Runtime Type Archetypes
 
-Every runtime type under `common/gameplay/` is exactly one of four archetypes. The
-**subfolder is the source of truth** for which one. This taxonomy is specific to the
-sim-management paradigm (centralised, serialised, mutated in discrete steps) — it is
-not in the neutral base, and the action-rpg preset replaces it with an
-entity/component taxonomy.
+Every runtime type under `game/domain/` is exactly one of four archetypes. The **subfolder is the source of truth** for which one. This taxonomy is specific to the sim-management paradigm (centralised, serialised, mutated in discrete steps) — it is not in the neutral base, and the action-rpg preset replaces it with an entity/component taxonomy.
+
+The domain tree is game-owned because its types encode the consuming game's state and rules. `common/` remains reserved for cross-project infrastructure and helpers that can be reused without gameplay-specific modification.
 
 Do not invent new suffixes or archetypes outside this set. If a new type doesn't
 clearly fit, stop and ask before naming it.

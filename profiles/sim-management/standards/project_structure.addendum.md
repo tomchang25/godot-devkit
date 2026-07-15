@@ -3,19 +3,19 @@
 Adds to the base `project_structure.md`. Only the deltas the preset introduces are
 listed here; everything else follows the base.
 
-## `common/gameplay/` — runtime type archetypes
+## `game/domain/` — runtime type archetypes
 
-The preset introduces a `gameplay/` tree under `common/`, partitioned by the four
-runtime-type archetypes. The subfolder **is** the archetype (see
-`runtime_archetypes.md`):
+The preset introduces a game-owned domain model partitioned by the four runtime-type archetypes. The subfolder **is** the archetype (see `runtime_archetypes.md`):
 
 ```
-common/gameplay/
+game/domain/
   store/      → StoreBase + domain Stores (System-held, serialised state)
   snapshot/   → read-only value objects (DaySummary, RunResult), computed then dropped
   service/    → stateless pure-math helpers (SellMath, …)
   entry/      → live instances of designer Data (ItemEntry wrapping ItemData)
 ```
+
+These types are game-specific even when they contain no scene code. They belong to the game's domain model rather than `common/`, which remains reserved for cross-project infrastructure and helpers that require no gameplay-specific modification.
 
 ## `global/autoloads/systems/` — orchestration layer
 
@@ -48,5 +48,6 @@ Feature scenes follow the base node-source rule plus the
 
 ```
 game/
+  domain/        → game-owned runtime model, partitioned by archetype
   example_sim/   → reference scene wiring Store reads + System transactions + save
 ```
