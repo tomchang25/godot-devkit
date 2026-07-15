@@ -1,0 +1,77 @@
+# Debug Mode Usage
+
+Use this when adding debug-only UI, shortcuts, or diagnostics.
+
+## Check debug state
+
+```gdscript
+if not Debug.enabled:
+    return
+```
+
+Do not check `OS.is_debug_build()` or `SettingsStore.debug_mode` directly from scene/gameplay code.
+
+## React to toggles
+
+```gdscript
+func _ready() -> void:
+    visible = Debug.enabled
+    Debug.toggled.connect(_on_debug_toggled)
+
+
+func _on_debug_toggled(is_enabled: bool) -> void:
+    visible = is_enabled
+```
+
+## Add debug-only nodes
+
+```gdscript
+if Debug.enabled:
+    var button := Button.new()
+    button.text = "Debug Action"
+    # node-src: debug
+    add_child(button)
+```
+
+Every debug button handler that mutates game state must guard again:
+
+```gdscript
+func _on_debug_action_pressed() -> void:
+    if not Debug.enabled:
+        return
+    _mutate_debug_state()
+```
+
+Reusable debug panels may be `.tscn` components only when they are hidden by default, self-gated from `Debug.enabled`, and every mutating handler has the guard above.
+
+## Prefer the shared `DebugPanel` over a one-off block scene
+
+For most cases, do not build a new debug block scene from scratch. Instance
+`res://game/shared/debug_panel/debug_panel.tscn` (`class_name DebugPanel`) in
+the gameplay scene, hidden by default, and register actions from `_ready()`:
+
+```gdscript
+@onready var _debug_panel: DebugPanel = %DebugPanel
+
+
+func _ready() -> void:
+    _debug_panel.add_action("Instant Dash", _on_debug_instant_dash)
+    _debug_panel.add_action("Kill All Enemies", _on_debug_kill_all)
+
+
+func _on_debug_instant_dash() -> void:
+    if not Debug.enabled:
+        return
+    _player.debug_force_dash_ready()
+
+
+func _on_debug_kill_all() -> void:
+    if not Debug.enabled:
+        return
+    _wave_controller.force_kill_all_enemies()
+```
+
+`DebugPanel.add_action()` already wraps the callback with a `Debug.enabled`
+check, so the button can never fire while debug is off — the guard in the
+handler is the belt-and-suspenders copy required by `debug_standard.md` §4a,
+not the only line of defense. See `debug_standard.md` §5 for the full contract.
