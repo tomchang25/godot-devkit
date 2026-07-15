@@ -46,32 +46,21 @@ Reusable debug panels may be `.tscn` components only when they are hidden by def
 
 ## Prefer the shared `DebugPanel` over a one-off block scene
 
-For most cases, do not build a new debug block scene from scratch. Instance
-`res://game/shared/debug_panel/debug_panel.tscn` (`class_name DebugPanel`) in
-the gameplay scene, hidden by default, and register actions from `_ready()`:
+Do not build a new debug block scene from scratch. Instance `res://game/shared/debug_panel/debug_panel.tscn` (`class_name DebugPanel`) in each scene that needs it, keep it hidden by default, and register that scene's actions from `_ready()`:
 
 ```gdscript
 @onready var _debug_panel: DebugPanel = %DebugPanel
 
 
-func _ready() -> void:
-    _debug_panel.add_action("Instant Dash", _on_debug_instant_dash)
-    _debug_panel.add_action("Kill All Enemies", _on_debug_kill_all)
+func _wire_debug_panel() -> void:
+    _debug_panel.add_action("Complete Current Step", _on_debug_complete_step, "Session")
+    _debug_panel.add_action("Grant Test Item", _on_debug_grant_item, "Inventory")
 
 
-func _on_debug_instant_dash() -> void:
+func _on_debug_complete_step() -> void:
     if not Debug.enabled:
         return
-    _player.debug_force_dash_ready()
-
-
-func _on_debug_kill_all() -> void:
-    if not Debug.enabled:
-        return
-    _wave_controller.force_kill_all_enemies()
+    _session_controller.complete_current_step_for_debug()
 ```
 
-`DebugPanel.add_action()` already wraps the callback with a `Debug.enabled`
-check, so the button can never fire while debug is off — the guard in the
-handler is the belt-and-suspenders copy required by `debug_standard.md` §4a,
-not the only line of defense. See `debug_standard.md` §5 for the full contract.
+`DebugPanel.add_action()` already wraps the callback with a `Debug.enabled` check, so the button can never fire while debug is off—the guard in the handler is the belt-and-suspenders copy required by `debug_standard.md` §4a, not the only line of defense. See `debug_standard.md` §5 for the full contract.

@@ -46,14 +46,50 @@ Preferred for new scenes and any scene being actively edited:
 @onready var _row_container: VBoxContainer = %RowContainer
 ```
 
-Each referenced node must have `unique_name_in_owner = true` set in the `.tscn` as a property line, not a header attribute:
-
-```text
-[node name="ConfirmButton" type="Button" parent="..." unique_id=...]
-unique_name_in_owner = true
-```
+Each referenced node must have `unique_name_in_owner = true` set in the `.tscn` as a property line, not a header attribute.
 
 Legacy `$RootVBox/...` full paths are allowed in existing scenes that have not been touched. Do not mix `%UniqueName` and `$RootVBox/...` within a single script.
+
+Avoid direct string lookups for fixed scene nodes:
+
+```gdscript
+get_node("Health")
+get_node_or_null("Health")
+find_child("Health", false, false)
+```
+
+For fixed child nodes owned by the same `.tscn`, use `%UniqueName` `@onready` references. For references across scene/component boundaries, expose a narrow public API, signal, or explicit exported dependency instead of having the parent reach into the child's internal node tree.
+
+**Base-class references to nodes that vary by concrete scene**: `%UniqueName` assumes the referencing script's own `.tscn` always has that unique name—true for a scene-specific script referencing its own static objects (`Node`, `CollisionShape2D`, a hitbox, a telegraph). It does not hold for a shared base-class script whose concrete scenes disagree on which optional child components exist (for example `BaseEntity` referencing `StatusBars` or `FacingArrow`, which some concrete kinds omit). For that case, declare the reference as `@export` so each concrete `.tscn` wires (or deliberately leaves null) the node paths that actually apply to it:
+
+```gdscript
+@export var _status_bars: EntityStatusBars
+```
+
+A by-name fallback lookup for a scene that hasn't been wired yet is optional, not required — add it only when graceful degradation matters more than surfacing the miswiring immediately. When added, warn so the gap gets fixed instead of silently persisting:
+
+```gdscript
+func _resolve_node_references() -> void:
+    _status_bars = _fallback_node(_status_bars, "StatusBars") as EntityStatusBars
+
+func _fallback_node(assigned: Node, node_name: StringName) -> Node:
+    if assigned != null:
+        return assigned
+    # node-ref: allow - fallback for scenes not yet wired to the matching @export slot
+    var found := find_child(str(node_name), false, false)
+    if found != null:
+        ToastManager.show_dev_error("%s: %s not wired to its @export slot; using name-based fallback." % [name, node_name])
+    return found
+```
+
+Rule of thumb: `%UniqueName` `@onready` for a script's own static, always-present scene objects; `@export` (with an optional name-based fallback) for base/shared-component scripts referencing nodes whose presence or wiring varies by concrete scene.
+
+Direct `get_node*` and `find_child` calls are allowed only for genuinely dynamic or test-only lookups. Mark the exception on the line directly above the call:
+
+```gdscript
+# node-ref: allow - dynamic path supplied by test helper
+var target := get_node(path)
+```
 
 ---
 
@@ -114,25 +150,23 @@ add_child(_debug_label)
 my_container.add_child(thing)
 ```
 
-An optional note may follow the tag after `-`. Keep the note to a short phrase, such as `empty-state label` or `per-grid cell, dynamic W x H`.
-
-If a marker needs a full-sentence justification to feel honest, treat that as a signal the node should be extracted into a `.tscn` component rather than annotated.
+An optional note may follow the tag after `-`. Keep the note to a short phrase, such as `empty-state label` or `per-grid cell, dynamic W x H`. If a marker needs a full-sentence justification to feel honest, treat that as a signal the node should be extracted into a `.tscn` component rather than annotated.
 
 Tags map 1:1 to the permitted-exceptions table above:
 
 | Tag | Case |
 | --- | --- |
 | `instance` | Packed scene instance not auto-detected from a local `.instantiate()` |
-| `ephemeral` | Tooltip, empty-state label, separator in a dynamic list |
+| `ephemeral` | Tooltip, empty-state label, or separator in a dynamic list |
 | `drawn` | Custom-drawn control with `_draw()` |
 | `debug` | Debug-only display behind a debug guard |
 | `timer` | `Timer` node, always created in code |
 
-`add_child(SomeScene.instantiate())` and any local variable assigned from `.instantiate()` need no marker; they are recognised automatically.
-
-This marker exemption is only a linter convenience. It does not permit fixed persistent components to be instantiated in code; those must still be pre-placed in the parent `.tscn`.
+`add_child(SomeScene.instantiate())`, any local variable assigned from `.instantiate()`, and any line containing the word "timer" (case-insensitive) need no marker; they are recognised automatically.
 
 An unmarked, non-instantiate `add_child` is a lint failure. The marker does not prove the node is genuinely ephemeral; it forces the author to declare intent so a reviewer can see and judge the claim. See `dev/standards/standards_enforcement.md`.
+
+This marker exemption is only a linter convenience. It does not permit fixed persistent components to be instantiated in code; those must still be pre-placed in the parent `.tscn`.
 
 ---
 

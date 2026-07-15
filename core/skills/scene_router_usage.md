@@ -6,8 +6,8 @@ Use this when adding or changing scene navigation.
 
 1. Add the target scene as an `ext_resource` in `global/autoloads/scene_router/scene_router.tscn` or the preset overlay's replacement file.
 2. Add a stable key to the embedded `SceneRegistry.routes` dictionary.
-3. Navigate with `SceneRouter.go_to(&"route_key")`.
-4. If this is the Start button target, set `SceneRegistry.default_route` to the new key.
+3. Navigate with `SceneRouter.go_to(&"route_key")` or a narrow `go_to_*()` wrapper when the route is reused or represents a stable project action.
+4. If this is the primary gameplay target, set `SceneRegistry.default_route` to the new key and keep `SceneRouter.go_to_default()` generic.
 
 ## Pass context
 

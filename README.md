@@ -57,6 +57,18 @@ python dev/foundation/tools/verify_consumer.py --root .
 
 The verifier checks the selected profile, canonical documents, and compatibility pointers so a project cannot silently recreate a local shared-rule fork.
 
+Validate the canonical governance contract itself with:
+
+```powershell
+python tools/verify_canonical_contracts.py
+```
+
+## Canonical baseline policy
+
+Starting with v0.2.0, shared documents use the pre-foundation Tickstrike governance set as the minimum semantic baseline. Generalization may replace project names, paths, and examples, and project-only rules may move to consumer addenda, but it must not silently remove workflow stages, review depth, lint/test triggers, fallback guidance, or other behavioral contracts.
+
+Compatible cross-project additions may extend that baseline. The canonical contract verifier protects the sections that were accidentally weakened in v0.1.0.
+
 ## Ownership boundary
 
 This repository owns shared prose and workflow contracts. Runtime implementations such as FSM, Hitbox/Hurtbox, SceneRouter, and default autoloads remain in `godot-template`. A runtime system should move to a separately versioned addon only when existing games are expected to receive implementation updates.

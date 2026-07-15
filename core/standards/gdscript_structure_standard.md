@@ -40,6 +40,7 @@ Rules:
 - `Reads` and `Writes` list managed state fields this script touches when that makes scene flow easier to review.
 - If the script reads nothing, omit the `Reads` line.
 - If the script writes nothing, omit the `Writes` line.
+- Comment and docstring text (the file-header description above and `##` GDDoc comments on functions) is an explicit exception to the global no-hard-wrap-prose rule because the GDScript formatter enforces a hard maximum line length. Wrap comment prose one sentence per line. If a sentence exceeds the configured maximum, break it at the nearest clause boundary and repeat the `#` or `##` marker on continuation lines.
 
 Testbed variant:
 
@@ -114,6 +115,8 @@ Rules:
 
 - Only include groups that have at least one variable.
 - Do not create custom group names unless no standard label fits.
+- Do not pad variable-block headers to a fixed width. Legacy padded headers may remain in untouched files, but any touched header must use the exact single-line shape above.
+- Leave whitespace after a variable-block header so it reads as a section label rather than a comment on the first declaration. Let the project formatter normalize the exact blank-line count.
 
 ---
 
@@ -125,7 +128,9 @@ Function groups use the double-line (`==`) format.
 # == Section name ==
 ```
 
-Use ASCII `=` and `-` header characters. Do not pad headers to a fixed column.
+Use ASCII `=` and `-` header characters. Do not pad headers to a fixed column. Padded function-section headers are violations in touched files; do not copy legacy fixed-width or Unicode headers into new or edited scripts.
+
+Leave whitespace after a function-section header so it reads as a section label rather than a comment on the first function. Let the project formatter normalize the exact blank-line count.
 
 ---
 

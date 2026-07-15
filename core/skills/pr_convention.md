@@ -1,70 +1,99 @@
 # Pull Request Convention
 
-A lightweight convention for PR titles and descriptions. Extends `conventional_commits.md` and `dev/standards/change_summary_standard.md`; read those first. This document only covers PR-level differences.
+A lightweight convention for PR titles and descriptions. Extends `conventional_commits.md` and `dev/standards/change_summary_standard.md` — read those first; this document only covers what differs at the PR level.
 
 ## Title
 
 The PR title follows the same format as a commit subject line:
 
-```text
+```
 <type>[optional scope][!]: <description>
 ```
 
-- Use the same types, scopes, and `!` breaking-change marker as `conventional_commits.md`.
-- Describe the PR as a whole, not its largest commit.
-- If the PR mixes types, pick the type of the primary change.
-- The title becomes the squash-merge commit subject, so it must stand alone in the git log: imperative mood, no trailing period, ideally 72 characters or fewer.
+- Same types, scopes, and `!` breaking-change marker as `conventional_commits.md`.
+- Describe the PR as a whole, not its largest commit. If the PR mixes types, pick the type of the primary change (a `feat` PR that includes incidental `fix`/`refactor` commits is still `feat:`).
+- The title becomes the squash-merge commit subject, so it MUST stand alone in the git log: imperative mood, no trailing period, ideally ≤ 72 characters.
 
 ## Description
 
-Use these sections in this order. `## Summary` and `## Changes` are required; the rest appear only when useful.
+Use these sections, in this order. `## Summary` and `## Changes` are REQUIRED; the rest appear only when useful.
 
-### `## Summary`
+### `## Summary` (required)
 
-Write 1-3 sentences explaining what changed and why. Lead with the problem or goal, not the implementation.
+1–3 sentences: what changed and why. Written for a reviewer with no context — lead with the problem or goal, not the implementation.
 
-### `## Changes`
+### `## Changes` (required)
 
-Summarize the logical changes the PR makes. Use prose for simple PRs or a bullet list with one logical change per `-` bullet. Summarize logical changes, not commits; the two do not need to map 1:1.
+The logical changes the PR makes. Format is free for simple PRs: use prose or a bullet list with one logical change per `-` bullet. Bullets, when used, follow the same imperative style as commit bodies (e.g. `- Add dodge-cancel windows to light attacks`). Summarize logical changes, not commits — the two need not map 1:1.
 
-For large PRs, group changes under `###` subheadings inside `## Changes`. Default to grouping by area or module because that usually matches how a reviewer reads the diff.
+For a PR large enough to warrant grouping, use `###` subheadings inside `## Changes`. Do not use bold-label bullets as section substitutes (for example, avoid `- **Enemy AI** — ...` or `**Enemy AI** — ...`). Pick whichever grouping fits the PR; default to **by area** when in doubt:
 
-### `## Testing`
+- **By area / module** (default) — group bullets under `###` headings for the module or scene they touch (`### Scene registry`, `### Navigation callers`, …). Matches how a reviewer reads the diff, so it is the safe choice for most PRs.
+- **By feature / theme** — group under each self-contained sub-feature or theme (`### Dodge-cancel timing`, `### Incidental fixes`, …). Use only when one PR genuinely carries several independent strands; if the strands are fully independent, prefer splitting into separate PRs instead.
+
+### `## Testing` (optional)
 
 List commands run and any meaningful manual verification. If no tests were run, say so and explain why.
 
-### `## Breaking changes`
+### `## Breaking changes` (when applicable)
 
-Required whenever the title carries `!` or any commit has a `BREAKING CHANGE:` footer. State what breaks and the migration path.
+Required whenever the title carries `!` or any commit has a `BREAKING CHANGE:` footer. State what breaks and the migration path (e.g. save-store migration version, YAML schema change requiring regeneration).
 
-### `## Notes`
+### `## Notes` (optional)
 
-Optional reviewer context: known limitations, follow-up work, review focus areas, or screenshots for UI changes.
+Anything the reviewer should know that isn't a change: known limitations, follow-up work, review focus areas, screenshots for UI changes.
 
 ## Rules
 
-- Follow `dev/standards/change_summary_standard.md` for tone, content, and administrative-housekeeping exclusions.
-- Do not paste the commit list as the description.
-- Do not hard-wrap prose at a column boundary.
-- Reference issues/plans with closing keywords where supported, such as `Closes #123`, at the end of the Summary rather than as a separate section.
+- The description describes _what changed in the codebase_ — follow `dev/standards/change_summary_standard.md` for tone, content, and administrative-housekeeping exclusions.
+- Do not paste the commit list as the description; `## Changes` summarizes logical changes, which may not map 1:1 to commits.
+- Do not hard-wrap prose at a column boundary — let the client wrap.
+- Reference issues/plans with closing keywords where supported (e.g. `Closes #123`) at the end of the Summary, not as a separate section.
 
 ## Example
 
-```text
-feat(scene_routing): validate route payloads before transitions
+Simple PR:
+
+```
+feat(player): add dodge-cancel windows to light attacks
 
 ## Summary
 
-Scene transitions now validate route IDs and payload shape before attempting to change scenes, making navigation failures easier to diagnose during development.
+Light attacks previously locked the player into the full animation, making combat feel sluggish. This adds a configurable dodge-cancel window to each light attack so the player can fluidly transition into a dodge.
 
 ## Changes
 
-- Add route payload validation before scene changes
-- Surface invalid route feedback through the debug gate
-- Cover invalid route IDs in routing tests
+- Add dodge-cancel window to light attack animations
+- Expose cancel timing in attack resource definitions
+```
+
+Grouped PR:
+
+```
+refactor(routing): centralize scene navigation
+
+## Summary
+
+Several screens owned direct scene transitions and duplicated route paths. This moves navigation behind `SceneRouter` so route registration and payload hand-off have one owner.
+
+## Changes
+
+### Scene registry
+
+- Register stable route keys and the default gameplay route
+- Keep unit-test navigation available through the registry
+
+### Navigation callers
+
+- Route screens through `SceneRouter.go_to()`
+- Replace duplicated scene paths with semantic route keys
+
+### Payload handling
+
+- Consume one-shot transition payloads in arriving scenes
+- Keep durable state in the project's save owner
 
 ## Testing
 
-- `python dev/tools/lint_standards.py --root .`
-- `godot_console --headless --path . --test-unit` from a safe snapshot
-```
+- `python dev/tools/lint_standards.py --files global/autoloads/scene_router/scene_router.gd game/ui/start_page.gd`
+- Manually verified the start page, default gameplay route, and payload-backed detail route

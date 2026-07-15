@@ -6,9 +6,9 @@ This document defines project-wide settings and the shared settings overlay.
 
 # 1. Ownership
 
-`SettingsStore` owns user preferences and persists them to `user://settings.json`. These preferences are not gameplay save data and must not be stored in `SaveManager` sections.
+`SettingsStore` owns user/device preferences and persists them to `user://settings.json`. These preferences are not gameplay save data and must not be stored in `SaveManager` sections.
 
-Examples of settings-store data: volume, fullscreen, language, debug preference, tutorial skip preference. Examples of gameplay save data: money, position, inventory, quest progress, unlocked content.
+Settings-store data includes volume, fullscreen, language, debug preference, and input preferences. Gameplay save data includes progression, inventory, world/session state, and other save-slot or profile state.
 
 ---
 
@@ -30,9 +30,9 @@ Gameplay screens may instance `game/shared/settings_button_overlay/settings_butt
 
 # 3. Persistence Rules
 
-Settings save immediately when changed. Do not require the player to hit a separate Apply button unless the setting is destructive or platform-specific.
+Settings save immediately when changed. Do not require a separate Apply button unless the setting is destructive or platform-specific.
 
-`user://settings.json` is intentionally global to the local user/device. Switching gameplay save slots must not reset audio, display, language, or debug preferences.
+`user://settings.json` is global to the local user/device. Starting a gameplay session or switching save slots must not reset audio, display, language, or debug preferences.
 
 ---
 
@@ -44,6 +44,6 @@ When adding a new project-wide setting:
 - Read/write it in `load_settings()` and `save_settings()`.
 - Add UI to `settings_overlay.tscn` and connect it in `settings_overlay.gd`.
 - Apply the setting immediately from the overlay signal handler or a dedicated `SettingsStore.apply_*()` method.
-- Add localization keys for any visible labels.
+- Add localization keys for every visible label introduced by the setting.
 
-Do not put gameplay progression toggles here unless they are truly user preferences and should apply across all save slots.
+Do not put gameplay-session or save-slot state in the settings overlay unless it is truly a global user preference.

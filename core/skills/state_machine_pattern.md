@@ -205,3 +205,6 @@ StateMachine (Node, script=state_machine.gd, tick_enabled=false, initial_state=N
 6. Connect animation-finished / attack-finished signals in `_enter()`, disconnect in `_exit()`.
 7. Set `state_id` in `_init()`, not in `_ready()`, so the StateMachine can register states before entering the initial state.
 8. The enum of state IDs lives in the state base class (e.g. `PlayerState.PlayerStateId`), not in the entity, to avoid circular dependency.
+9. NEVER call `change_state()` inside `_enter()` or `_exit()`. The state machine sets a re-entrant guard (`_transitioning = true`) during `_do_transition()`, so inner `change_state()` calls are silently swallowed. Call `change_state()` only from `_update()`, `_physics_update()`, or signal callbacks that fire after the transition completes.
+
+Domain-specific FSM contracts—for example, a clocked simulation where states decide intent while another runtime owns timing—belong in a consumer-local skill addendum. The addendum may narrow this pattern for that domain, but it must preserve the behavior-delegation and transition-ownership rules above unless it explicitly declares an override.
