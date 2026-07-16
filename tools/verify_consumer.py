@@ -112,42 +112,6 @@ def resolve_v2(
     return f"{platform}; {profile_label}", pointers
 
 
-def resolve_legacy(
-    *,
-    dev: Path,
-    manifest: dict[str, Any],
-    errors: list[str],
-) -> tuple[str, list[dict[str, str]]]:
-    legacy = manifest.get("legacy", {})
-    profile_path = dev.parent / legacy.get("profile_path", "dev/foundation.profile")
-    if not profile_path.is_file():
-        errors.append("missing dev/foundation.config.json and legacy dev/foundation.profile")
-        profile = ""
-    else:
-        profile = profile_path.read_text(encoding="utf-8").strip()
-
-    platform = legacy.get("platform", "godot")
-    profile_manifest = manifest.get("profiles", {})
-    if profile != "core":
-        entry = profile_manifest.get(profile)
-        if not isinstance(entry, dict):
-            errors.append(f"unknown legacy foundation profile: {profile!r}")
-        else:
-            if platform not in entry.get("platforms", []):
-                errors.append(f"legacy profile {profile!r} does not support platform {platform!r}")
-            startup = entry.get("startup")
-            if not isinstance(startup, str) or not (FOUNDATION / startup).is_file():
-                errors.append(f"missing profile startup for {profile!r}")
-
-    relative_pointers = legacy.get("compatibility_pointers", [])
-    pointers = [
-        {"local": relative, "canonical": f"core/{relative}"}
-        for relative in relative_pointers
-        if isinstance(relative, str)
-    ]
-    return f"legacy {platform}; {profile or 'unknown profile'}", pointers
-
-
 def main() -> int:
     args = parse_args()
     root = args.root.resolve()
@@ -156,18 +120,15 @@ def main() -> int:
 
     manifest = read_json(MANIFEST, errors)
     config_path = root / manifest.get("config_path", "dev/foundation.config.json")
-    legacy_path = root / manifest.get("legacy", {}).get("profile_path", "dev/foundation.profile")
-
     if config_path.is_file():
-        if legacy_path.is_file():
-            errors.append("remove legacy dev/foundation.profile when dev/foundation.config.json is present")
         label, pointers = resolve_v2(
             config=read_json(config_path, errors),
             manifest=manifest,
             errors=errors,
         )
     else:
-        label, pointers = resolve_legacy(dev=dev, manifest=manifest, errors=errors)
+        errors.append("missing required dev/foundation.config.json")
+        label, pointers = "unknown platform", []
 
     seen_local: set[str] = set()
     for pointer in pointers:

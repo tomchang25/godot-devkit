@@ -95,12 +95,17 @@ def main() -> int:
         if valid_web.returncode != 0 or "foundation: OK (web-react; no profiles" not in valid_web.stdout:
             failures.append(f"valid Web React consumer failed:\n{valid_web.stdout}{valid_web.stderr}")
 
+    with tempfile.TemporaryDirectory(prefix="game-devkit-missing-config-") as directory:
+        missing_config = run_verifier(Path(directory))
+        if missing_config.returncode == 0 or "missing required dev/foundation.config.json" not in missing_config.stdout:
+            failures.append("consumer without schema-2 configuration was not rejected")
+
     if failures:
         for failure in failures:
             print(f"consumer-test: ERROR: {failure}")
         return 1
 
-    print("consumer-test: OK (Godot and Web React schema-2 fixtures plus invalid target)")
+    print("consumer-test: OK (Godot and Web React schema-2 fixtures plus invalid configuration and target)")
     return 0
 
 

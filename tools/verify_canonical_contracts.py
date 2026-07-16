@@ -324,9 +324,6 @@ def verify_manifest(errors: list[str]) -> None:
     if not isinstance(platforms, dict) or not platforms:
         errors.append("consumer manifest must declare at least one platform")
         platforms = {}
-    legacy_manifest = manifest.get("legacy", {})
-    legacy_platform = legacy_manifest.get("platform") if isinstance(legacy_manifest, dict) else None
-    platform_canonicals: dict[str, str] = {}
     for platform, entry in platforms.items():
         if not isinstance(entry, dict):
             errors.append(f"platform manifest entry must be an object: {platform!r}")
@@ -357,14 +354,6 @@ def verify_manifest(errors: list[str]) -> None:
         overlap = core_local.intersection(local_paths)
         for local in sorted(overlap):
             errors.append(f"core and platform pointers compete for dev/{local}")
-        if platform == legacy_platform:
-            for pointer in entry.get("compatibility_pointers", []):
-                if isinstance(pointer, dict):
-                    local = pointer.get("local")
-                    canonical = pointer.get("canonical")
-                    if isinstance(local, str) and isinstance(canonical, str):
-                        platform_canonicals[local] = canonical
-
     profiles = manifest.get("profiles", {})
     if not isinstance(profiles, dict):
         errors.append("consumer manifest profiles entry must be an object")
@@ -383,28 +372,6 @@ def verify_manifest(errors: list[str]) -> None:
             for platform in allowed:
                 if platform not in platforms:
                     errors.append(f"profile {profile!r} references unknown platform {platform!r}")
-
-    legacy = manifest.get("legacy", {})
-    if not isinstance(legacy, dict):
-        errors.append("consumer manifest legacy entry must be an object")
-        return
-    legacy_pointers = legacy.get("compatibility_pointers", [])
-    if not isinstance(legacy_pointers, list):
-        errors.append("legacy compatibility_pointers must be an array")
-        return
-    for relative in legacy_pointers:
-        if not isinstance(relative, str):
-            errors.append(f"invalid legacy compatibility pointer: {relative!r}")
-            continue
-        legacy_canonical = ROOT / "core" / relative
-        if not legacy_canonical.is_file():
-            errors.append(f"missing legacy compatibility path: core/{relative}")
-        if relative in platform_canonicals:
-            text = legacy_canonical.read_text(encoding="utf-8") if legacy_canonical.is_file() else ""
-            expected = platform_canonicals[relative]
-            if not text.startswith("# Legacy Platform Pointer") or expected not in text:
-                errors.append(f"invalid legacy platform shim: core/{relative} -> {expected}")
-
 
 def main() -> int:
     errors: list[str] = []

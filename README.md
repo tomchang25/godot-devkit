@@ -55,8 +55,6 @@ A Web React consumer without an architecture profile uses:
 
 The selected platform is required. Profiles are optional and ordered. The consumer verifier rejects unknown platforms, duplicate profiles, unsupported platform/profile combinations, missing canonical documents, competing pointers, and local shared-rule forks.
 
-Legacy Godot consumers may temporarily retain `dev/foundation.profile` with `core`, `action-rpg`, or `sim-management`. Legacy mode assumes the `godot` platform and follows transitional shims below old `core/` paths. A consumer must not keep both configuration files.
-
 ## Consumer Layout
 
 ```text
@@ -138,7 +136,7 @@ git -C dev/foundation checkout vX.Y.Z
 python dev/foundation/tools/verify_consumer.py --root .
 ```
 
-For a schema-2 migration, replace `dev/foundation.profile` with `dev/foundation.config.json` and update local compatibility pointers to the canonical paths declared by the selected layers before running the verifier. Review, commit, and push the submodule pointer and consumer migration from the consuming project.
+When upgrading from a pre-schema-2 consumer, create `dev/foundation.config.json` and update local compatibility pointers to the canonical paths declared by the selected layers before running the verifier. Review, commit, and push the submodule pointer and consumer migration from the consuming project.
 
 ## Verification
 
@@ -155,7 +153,7 @@ python tools/verify_canonical_contracts.py
 python tools/test_verify_consumer.py
 ```
 
-The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, platform manifest coverage, profile constraints, canonical targets, and legacy shims. Schema-2 fixtures cover both Godot and Web React consumers.
+The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, platform manifest coverage, profile constraints, and canonical targets. Schema-2 fixtures cover both Godot and Web React consumers.
 
 ## Canonical Baseline Policy
 

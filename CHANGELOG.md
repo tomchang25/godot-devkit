@@ -1,12 +1,15 @@
 # Changelog
 
+## 0.4.1
+
+- Remove legacy Godot `core/` platform-pointer shims and require schema-2 `foundation.config.json` consumers to select their platform explicitly.
+
 ## 0.4.0
 
 - Establish an engine-neutral governance core with a canonical work lifecycle and governance-structure standard.
-- Move irreducible Godot, GDScript, scene, autoload, and engine UI contracts into a dedicated Godot platform layer while retaining legacy path shims.
+- Move irreducible Godot, GDScript, scene, autoload, and engine UI contracts into a dedicated Godot platform layer.
 - Generalize shared research, specification, review, staged-review, and verification workflows so consuming projects own concrete tool commands.
-- Add schema-2 consumer configuration with independent platform and profile selection while preserving verified legacy Godot consumers.
-- Keep `foundation.profile` and old `core/` platform paths as migration shims; consumers adopting `foundation.config.json` must retarget platform compatibility pointers to `platforms/godot/`.
+- Add schema-2 consumer configuration with independent platform and profile selection.
 - Add a minimal Web React platform for React lifecycle, DOM accessibility, browser persistence, IndexedDB, service workers, and PWA/browser capability contracts.
 - Promote persistence ownership and state lifecycle rules into core; keep accessibility and testing in the Web React platform until another platform has a concrete shared contract.
 
