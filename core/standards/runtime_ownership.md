@@ -54,6 +54,21 @@ If a scene-local controller state later needs checkpoint, save, or cross-scene r
 
 ---
 
+## State Lifecycle Addendum
+
+Classify state by lifecycle as well as by runtime role:
+
+- **Presentation state** affects only the current interaction surface, such as selection, filters, transient panels, or draft input. Its controller or feature UI owner keeps it local unless several surfaces require one explicit UI owner.
+- **Persisted game state** contains progress, resources, location, and durable operations. The domain owner or application mutation gateway owns it; presentation code does not mutate it directly.
+- **Runtime transient state** contains hydration status, pending writes, active capabilities, connection state, and reconstructable coordination. Infrastructure or application orchestration owns it; it is not player progress.
+- **Derived state** is computed from canonical state and authored content, such as eligibility, previews, capacity, progress, or unlock state. It is not persisted by default, and memoization never creates a second source of truth.
+
+State-changing commands validate preconditions, produce one coherent next state, return explicit errors for invalid input, and coordinate related logs, accounting results, and dirty-save markers in the same application transaction when consistency requires it. Time, randomness, storage, and external capabilities enter through explicit inputs or narrow adapters.
+
+Multiple entry points that perform the same transition use the same command or resolver so resumed, automated, online, and manually triggered paths cannot drift.
+
+---
+
 # 4. System
 
 Use `System` for a domain coordinator, mutation gateway, save provider, or aggregate owner when a concept is broader than one scene or must mediate mutations for consistency.

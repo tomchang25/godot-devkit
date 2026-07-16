@@ -29,8 +29,9 @@ Do not copy a shared rule into a consuming project. Keep compatibility files as 
 
 - Before adding, moving, or classifying governance documents, read `core/standards/governance_structure_standard.md`.
 - Before introducing a Controller, System, Store, Service, manager, save provider, or another runtime state owner, read `core/standards/runtime_ownership.md` plus the selected profiles and relevant project-local standards.
-- Before changing a persisted schema or compatibility promise, read `core/agent_rules/save_migrations.md` plus the platform and project-local persistence contracts.
+- Before changing canonical, transient, presentation, or derived state ownership, read `core/standards/runtime_ownership.md` plus the selected profile.
+- Before changing persistence, hydration, save scheduling, a persisted schema, or a compatibility promise, read `core/standards/persistence_standard.md`, `core/agent_rules/save_migrations.md`, and the platform and project-local persistence contracts.
 - Before creating or updating plans, sketches, implementation specs, reviews, closeouts, PR text, or change summaries, read `core/workflows/work_lifecycle.md`, the matching workflow, and `core/standards/change_summary_standard.md` where a delivered outcome is being summarized.
 - Before release or compatibility assessment, read `core/skills/semantic_versioning.md`.
 
-Platform and project-local startup rules add triggers for source formats, runtime APIs, tests, linters, generated data, sandbox procedures, and build commands. Core documentation must not invent those execution details.
+Platform and project-local startup rules add triggers for source formats, runtime APIs, accessibility, tests, linters, generated data, sandbox procedures, and build commands. Core documentation must not invent those execution details.

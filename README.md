@@ -14,6 +14,7 @@ core/                         Engine- and framework-neutral governance
   workflows/                  Canonical planning, review, and delivery lifecycle
 platforms/
   godot/                      GDScript, scene, autoload, and Godot-specific contracts
+  web-react/                  React, DOM, browser persistence, and PWA contracts
 profiles/
   action-rpg/                 Action-entity architecture; currently constrained to Godot
   sim-management/             Store/System management architecture; currently constrained to Godot
@@ -39,6 +40,16 @@ New consumers declare platform and profile axes independently in `dev/foundation
   "schema_version": 2,
   "platform": "godot",
   "profiles": ["action-rpg"]
+}
+```
+
+A Web React consumer without an architecture profile uses:
+
+```json
+{
+  "schema_version": 2,
+  "platform": "web-react",
+  "profiles": []
 }
 ```
 
@@ -144,7 +155,7 @@ python tools/verify_canonical_contracts.py
 python tools/test_verify_consumer.py
 ```
 
-The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, manifest structure, profile constraints, canonical targets, and legacy shims.
+The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, platform manifest coverage, profile constraints, canonical targets, and legacy shims. Schema-2 fixtures cover both Godot and Web React consumers.
 
 ## Canonical Baseline Policy
 

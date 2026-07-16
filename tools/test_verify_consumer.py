@@ -55,7 +55,7 @@ def build_consumer(root: Path, config: dict[str, Any]) -> None:
 def main() -> int:
     failures: list[str] = []
 
-    with tempfile.TemporaryDirectory(prefix="game-devkit-consumer-") as directory:
+    with tempfile.TemporaryDirectory(prefix="game-devkit-godot-consumer-") as directory:
         root = Path(directory)
         build_consumer(
             root,
@@ -80,12 +80,27 @@ def main() -> int:
         if invalid_pointer.returncode == 0 or "wrong canonical target" not in invalid_pointer.stdout:
             failures.append("wrong schema-2 canonical target was not rejected")
 
+    with tempfile.TemporaryDirectory(prefix="game-devkit-web-consumer-") as directory:
+        root = Path(directory)
+        build_consumer(
+            root,
+            {
+                "schema_version": 2,
+                "platform": "web-react",
+                "profiles": [],
+            },
+        )
+
+        valid_web = run_verifier(root)
+        if valid_web.returncode != 0 or "foundation: OK (web-react; no profiles" not in valid_web.stdout:
+            failures.append(f"valid Web React consumer failed:\n{valid_web.stdout}{valid_web.stderr}")
+
     if failures:
         for failure in failures:
             print(f"consumer-test: ERROR: {failure}")
         return 1
 
-    print("consumer-test: OK (schema-2 valid and invalid fixtures)")
+    print("consumer-test: OK (Godot and Web React schema-2 fixtures plus invalid target)")
     return 0
 
 

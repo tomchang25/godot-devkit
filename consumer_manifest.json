@@ -58,6 +58,7 @@
       { "local": "skills/semantic_versioning.md", "canonical": "core/skills/semantic_versioning.md" },
       { "local": "standards/change_summary_standard.md", "canonical": "core/standards/change_summary_standard.md" },
       { "local": "standards/governance_structure_standard.md", "canonical": "core/standards/governance_structure_standard.md" },
+      { "local": "standards/persistence_standard.md", "canonical": "core/standards/persistence_standard.md" },
       { "local": "standards/probe_standard.md", "canonical": "core/standards/probe_standard.md" },
       { "local": "standards/runtime_ownership.md", "canonical": "core/standards/runtime_ownership.md" },
       { "local": "workflows/closeout_standard.md", "canonical": "core/workflows/closeout_standard.md" },
@@ -101,6 +102,20 @@
         { "local": "standards/scene_routing_standard.md", "canonical": "platforms/godot/standards/scene_routing_standard.md" },
         { "local": "standards/settings_overlay_standard.md", "canonical": "platforms/godot/standards/settings_overlay_standard.md" },
         { "local": "standards/theme_standard.md", "canonical": "platforms/godot/standards/theme_standard.md" }
+      ]
+    },
+    "web-react": {
+      "startup": "platforms/web-react/platform_startup.md",
+      "compatibility_pointers": [
+        { "local": "skills/indexeddb-upgrade-transactions.md", "canonical": "platforms/web-react/skills/indexeddb-upgrade-transactions.md" },
+        { "local": "skills/react-strict-mode-effects.md", "canonical": "platforms/web-react/skills/react-strict-mode-effects.md" },
+        { "local": "skills/service-worker-cache-versioning.md", "canonical": "platforms/web-react/skills/service-worker-cache-versioning.md" },
+        { "local": "standards/browser_persistence_standard.md", "canonical": "platforms/web-react/standards/browser_persistence_standard.md" },
+        { "local": "standards/naming_conventions.md", "canonical": "platforms/web-react/standards/naming_conventions.md" },
+        { "local": "standards/react_component_standard.md", "canonical": "platforms/web-react/standards/react_component_standard.md" },
+        { "local": "standards/testing_standard.md", "canonical": "platforms/web-react/standards/testing_standard.md" },
+        { "local": "standards/web_accessibility_standard.md", "canonical": "platforms/web-react/standards/web_accessibility_standard.md" },
+        { "local": "standards/web_platform_standard.md", "canonical": "platforms/web-react/standards/web_platform_standard.md" }
       ]
     }
   },

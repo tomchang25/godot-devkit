@@ -7,6 +7,8 @@
 - Generalize shared research, specification, review, staged-review, and verification workflows so consuming projects own concrete tool commands.
 - Add schema-2 consumer configuration with independent platform and profile selection while preserving verified legacy Godot consumers.
 - Keep `foundation.profile` and old `core/` platform paths as migration shims; consumers adopting `foundation.config.json` must retarget platform compatibility pointers to `platforms/godot/`.
+- Add a minimal Web React platform for React lifecycle, DOM accessibility, browser persistence, IndexedDB, service workers, and PWA/browser capability contracts.
+- Promote persistence ownership and state lifecycle rules into core; keep accessibility and testing in the Web React platform until another platform has a concrete shared contract.
 
 ## 0.3.0
 

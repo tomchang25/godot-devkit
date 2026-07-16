@@ -31,12 +31,21 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "Every governance rule has exactly one canonical owner",
         "## Classification Checklist",
     ),
+    "core/standards/persistence_standard.md": (
+        "## Ownership Boundary",
+        "## Save Envelope",
+        "Hydration reaches a settled success",
+        "Storage layout version and game payload schema version remain separate",
+    ),
     "core/standards/runtime_ownership.md": (
         "# 1. Primary Test",
         "# 2. Controller",
         "# 4. System",
         "# 5. Store",
         "# 6. Service",
+        "## State Lifecycle Addendum",
+        "Derived state",
+        "Multiple entry points that perform the same transition",
     ),
     "core/workflows/work_lifecycle.md": (
         "## Canonical Flow",
@@ -100,6 +109,41 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "GDScript",
         "serialized scene",
         "never fork a core workflow",
+    ),
+    "platforms/web-react/platform_startup.md": (
+        "## Platform Triggers",
+        "React lifecycle",
+        "IndexedDB",
+        "The consuming project owns its framework mode",
+    ),
+    "platforms/web-react/standards/react_component_standard.md": (
+        "Rendering is pure",
+        "List keys use stable domain or content identity",
+        "Strict Mode replay",
+        "server components",
+    ),
+    "platforms/web-react/standards/browser_persistence_standard.md": (
+        "Database layout version and save-payload schema version are separate owners",
+        "Hydration blocks autosave",
+        "Define cross-tab ownership or conflict policy",
+    ),
+    "platforms/web-react/standards/web_accessibility_standard.md": (
+        "Use semantic landmarks",
+        "Preserve keyboard reachability",
+        "Do not communicate state by color alone",
+        "ARIA supplements native semantics",
+    ),
+    "platforms/web-react/standards/testing_standard.md": (
+        "## Layers",
+        "Domain tests",
+        "Application tests",
+        "Component tests",
+        "Build smoke",
+    ),
+    "platforms/web-react/skills/indexeddb-upgrade-transactions.md": (
+        "versionchange",
+        "upgrade transaction",
+        "old payload",
     ),
     "platforms/godot/skills/state_machine_pattern.md": (
         "behaviour-delegation",
@@ -280,7 +324,8 @@ def verify_manifest(errors: list[str]) -> None:
     if not isinstance(platforms, dict) or not platforms:
         errors.append("consumer manifest must declare at least one platform")
         platforms = {}
-    selected_local = set(core_local)
+    legacy_manifest = manifest.get("legacy", {})
+    legacy_platform = legacy_manifest.get("platform") if isinstance(legacy_manifest, dict) else None
     platform_canonicals: dict[str, str] = {}
     for platform, entry in platforms.items():
         if not isinstance(entry, dict):
@@ -309,16 +354,16 @@ def verify_manifest(errors: list[str]) -> None:
             errors.append(f"platform canonical is missing from the manifest: {canonical}")
         for canonical in sorted(declared_canonicals - actual_canonicals):
             errors.append(f"platform manifest entry has no canonical file: {canonical}")
-        overlap = selected_local.intersection(local_paths)
+        overlap = core_local.intersection(local_paths)
         for local in sorted(overlap):
             errors.append(f"core and platform pointers compete for dev/{local}")
-        selected_local.update(local_paths)
-        for pointer in entry.get("compatibility_pointers", []):
-            if isinstance(pointer, dict):
-                local = pointer.get("local")
-                canonical = pointer.get("canonical")
-                if isinstance(local, str) and isinstance(canonical, str):
-                    platform_canonicals[local] = canonical
+        if platform == legacy_platform:
+            for pointer in entry.get("compatibility_pointers", []):
+                if isinstance(pointer, dict):
+                    local = pointer.get("local")
+                    canonical = pointer.get("canonical")
+                    if isinstance(local, str) and isinstance(canonical, str):
+                        platform_canonicals[local] = canonical
 
     profiles = manifest.get("profiles", {})
     if not isinstance(profiles, dict):
