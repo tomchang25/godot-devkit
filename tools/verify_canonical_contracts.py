@@ -49,7 +49,10 @@ REQUIRED: dict[str, tuple[str, ...]] = {
     ),
     "core/workflows/work_lifecycle.md": (
         "## Canonical Flow",
+        "Draft\n-> (Probe)\n-> (Main Plan)\n-> (Child Sketch)\n-> Implementation Spec",
         "## Transition Gates",
+        "### Draft to Probe",
+        "### Draft or Probe to Standalone Implementation Spec",
         "### Implementation to Verify",
         "## Review Position",
         "## Operational Commands",
@@ -61,19 +64,20 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "## Superseded Work",
         "## Final Verification and Report",
     ),
+    "core/workflows/probe_standard.md": (
+        "Status: Draft probe.",
+        "## Content Rules",
+    ),
     "core/workflows/plan_standard.md": (
-        "work_lifecycle.md",
         "## Child Decomposition",
         "standalone implementation spec",
         "sketch",
     ),
     "core/workflows/sketch_standard.md": (
-        "work_lifecycle.md",
         "Parent Plan: none (standalone sketch)",
         "Candidate files to inspect",
     ),
     "core/workflows/implementation_spec_standard.md": (
-        "work_lifecycle.md",
         "Parent Plan: none (standalone spec)",
         "### 2. Summary",
         "### 3. Requirements (standalone only)",

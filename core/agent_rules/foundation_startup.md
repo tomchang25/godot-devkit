@@ -6,8 +6,7 @@ This repository is the shared governance foundation. In a consuming project:
 
 1. Read this file.
 2. Read `dev/foundation.config.json` when it exists. Load the selected platform startup from `dev/foundation/platforms/<platform>/platform_startup.md`, then load every selected profile startup from `dev/foundation/profiles/<profile>/profile_startup.md`.
-3. For a legacy consumer with only `dev/foundation.profile`, treat the platform as `godot`; load `dev/foundation/platforms/godot/platform_startup.md`, then load the named profile unless its value is `core`.
-4. Read the consuming project's `dev/agent_rules/agent_startup.md` for its snapshot, environment, tools, permissions, verification commands, and explicit project-local overrides.
+3. Read the consuming project's `dev/agent_rules/agent_startup.md` for its snapshot, environment, tools, permissions, verification commands, and explicit project-local overrides.
 
 When working inside a template subtree, treat the template's documented base directory as the consuming project root so the same `dev/` paths resolve below that base.
 
@@ -31,7 +30,7 @@ Do not copy a shared rule into a consuming project. Keep compatibility files as 
 - Before introducing a Controller, System, Store, Service, manager, save provider, or another runtime state owner, read `core/standards/runtime_ownership.md` plus the selected profiles and relevant project-local standards.
 - Before changing canonical, transient, presentation, or derived state ownership, read `core/standards/runtime_ownership.md` plus the selected profile.
 - Before changing persistence, hydration, save scheduling, a persisted schema, or a compatibility promise, read `core/standards/persistence_standard.md`, `core/agent_rules/save_migrations.md`, and the platform and project-local persistence contracts.
-- Before creating or updating plans, sketches, implementation specs, reviews, closeouts, PR text, or change summaries, read `core/workflows/work_lifecycle.md`, the matching workflow, and `core/standards/change_summary_standard.md` where a delivered outcome is being summarized.
+- Before creating or updating probes, plans, sketches, implementation specs, reviews, closeouts, PR text, or change summaries, read `core/workflows/work_lifecycle.md`, the matching workflow, and `core/standards/change_summary_standard.md` where a delivered outcome is being summarized.
 - Before release or compatibility assessment, read `core/skills/semantic_versioning.md`.
 
 Platform and project-local startup rules add triggers for source formats, runtime APIs, accessibility, tests, linters, generated data, sandbox procedures, and build commands. Core documentation must not invent those execution details.

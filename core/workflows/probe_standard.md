@@ -29,7 +29,7 @@ Probes live in `dev/docs/plans/` when they are tied to an active or likely work 
 <flow_or_system>_<short_topic>.probe.md
 ```
 
-Archive or delete the note when it stops being useful. If the discussion becomes actionable, convert it into the appropriate plan/spec/sketch and keep only one active source of truth.
+Archive or delete the note when it stops being useful. Keep only one active source of truth for a conclusion.
 
 ## Format
 
@@ -70,7 +70,7 @@ Use `Open question:` lines for known unknowns. Each open question should be spec
 - Codebase evidence is allowed, including class names, method names, fields, and high-level file references, because these notes may be discussion handoffs rather than durable design memory.
 - Avoid line numbers and narrow diff details unless the note is explicitly a review handoff and the reference will remain useful after the current branch moves.
 - Keep implementation proposals framed as discussion options unless a direction has actually been chosen.
-- Do not include a task checklist unless the note has become actionable; convert it to a plan/spec instead.
+- Do not include a task checklist.
 - Do not duplicate the same conclusion in `TODO.md`, a plan, and a system doc. Keep one source of truth and link or move the content as it matures.
 - Markdown prose follows the repo-wide no-hard-wrap rule.
 
@@ -95,12 +95,3 @@ Open question: the first unresolved decision is phrased as a direct question.
 
 Open question: the second unresolved decision is phrased as a direct question.
 ```
-
-## Graduation
-
-When the discussion resolves:
-
-- If it becomes work, convert it into the appropriate plan, sketch, or implementation spec and remove or archive the probe.
-- If it becomes evergreen design, graduate the conclusion into a `dev/docs/systems/` doc and archive the probe.
-- If it becomes a durable rationale without implementation detail, rewrite it as a decision note.
-- If it becomes irrelevant, delete it.

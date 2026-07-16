@@ -22,7 +22,7 @@ Before editing, read:
 2. `dev/workflows/implementation_spec_standard.md` in full.
 3. `dev/docs/README.md`.
 4. The named source document and its parent plan, when either exists.
-5. The source artifact's workflow or standard when it is a plan, sketch, or probe.
+5. The source artifact's workflow when it is a plan, sketch, or probe.
 6. Every request-relevant rule, standard, system doc, or skill discovered from the target, including `dev/agent_rules/lint_before_finish.md`.
 
 ## Decision Gate

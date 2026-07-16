@@ -12,7 +12,7 @@
       { "local": "standards/change_summary_standard.md", "canonical": "core/standards/change_summary_standard.md" },
       { "local": "standards/governance_structure_standard.md", "canonical": "core/standards/governance_structure_standard.md" },
       { "local": "standards/persistence_standard.md", "canonical": "core/standards/persistence_standard.md" },
-      { "local": "standards/probe_standard.md", "canonical": "core/standards/probe_standard.md" },
+      { "local": "workflows/probe_standard.md", "canonical": "core/workflows/probe_standard.md" },
       { "local": "standards/runtime_ownership.md", "canonical": "core/standards/runtime_ownership.md" },
       { "local": "workflows/closeout_standard.md", "canonical": "core/workflows/closeout_standard.md" },
       { "local": "workflows/implementation_spec_standard.md", "canonical": "core/workflows/implementation_spec_standard.md" },

@@ -3,6 +3,7 @@
 ## 0.4.1
 
 - Remove legacy Godot `core/` platform-pointer shims and require schema-2 `foundation.config.json` consumers to select their platform explicitly.
+- Make Probe an optional lifecycle stage before an optional Plan, and move its artifact contract into `core/workflows/` alongside Plan, Sketch, and Implementation Spec.
 
 ## 0.4.0
 

@@ -2,18 +2,9 @@
 
 Use this standard to produce the final implementation handoff: a codebase-verified document that tells an implementation agent exactly what to change, what order to land it in, what relationships must be preserved, and what observable behavior proves completion. In conversation and in other documents, "spec" is always short for implementation spec.
 
-`work_lifecycle.md` owns the transitions into implementation and onward to verification and closeout. This file owns only the implementation spec artifact's required content and quality.
+An implementation spec is not a plan and not a sketch. A plan owns durable product/design intent, while a sketch records provisional implementation-facing context. The spec is codebase-verified and is the only document intended to be executed directly.
 
-An implementation spec is not a plan and not a sketch. A plan owns durable product/design intent. A sketch may explore a plan child before the final handoff. The spec is written last, against the codebase as it exists at that moment, and is the only document intended to be executed directly.
-
-## Lifecycle Position
-
-Common routes:
-
-- `feature request` or actionable `probe` -> implementation spec, when the work is narrow enough that a durable plan would add little.
-- `probe` -> plan -> child sketch -> implementation spec, when the work needs durable design, decomposition, or sequencing. Skip the sketch only for small, obvious child boundaries.
-
-All upstream stages may retrieve codebase context. That context is allowed to influence the plan or sketch, but it is not a substitute for spec-time verification. Before writing the implementation spec, the authoring agent re-reads the relevant live code and updates or replaces the earlier approach as needed.
+Earlier artifacts may inform the spec, but they are not a substitute for spec-time verification. Before finalizing the implementation spec, the authoring agent re-reads the relevant live code and updates or replaces earlier assumptions as needed.
 
 ## Roles and Quality Gate
 

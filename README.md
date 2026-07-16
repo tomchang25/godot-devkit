@@ -82,7 +82,7 @@ A consuming project keeps shared discovery paths as compatibility pointers. It n
 
 ## Work Lifecycle
 
-`core/workflows/work_lifecycle.md` is the single lifecycle owner for Draft, Main Plan, Child Sketch, Child Implementation Spec, Implementation, Verify, and Closeout transitions. Artifact standards define document quality, and command contracts define safe operations. Platforms may add dedicated commands, but they never fork the core lifecycle or duplicate shared workflows.
+`core/workflows/work_lifecycle.md` is the single lifecycle owner for `Draft -> (Probe) -> (Main Plan) -> (Child Sketch) -> Implementation Spec -> Implementation -> Verify -> Closeout`. Parenthesized stages are optional; a standalone implementation spec remains required before implementation. Workflow artifacts define document quality, and command contracts define safe operations. Platforms may add dedicated commands, but they never fork the core lifecycle or duplicate shared workflows.
 
 ## Versioning and Synchronization
 

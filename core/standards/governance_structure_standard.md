@@ -16,7 +16,7 @@ Core owns:
 
 - Agent behavior that is independent of a concrete toolchain.
 - Planning, research, specification, review, delivery, and closeout workflows.
-- Cross-project artifact standards such as change summaries, probes, lifecycle ownership, and runtime responsibility vocabulary.
+- Cross-project durable output contracts such as change summaries, lifecycle ownership, and runtime responsibility vocabulary.
 - Format references and hazard cards whose contract does not require one engine or framework.
 
 Core workflows state obligations and decision boundaries. They delegate concrete commands to the consuming project's startup, verification, and tooling contracts.

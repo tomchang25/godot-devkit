@@ -1,28 +1,29 @@
 # Work Lifecycle
 
-This document is the single lifecycle owner for forward work as it moves from an idea into implementation, verification, and closeout. Artifact standards define what a plan, sketch, implementation spec, review, and closeout must contain. Consumer-local documentation rules define where active and archived artifacts live. Other documents may point to this lifecycle, but they must not recreate or silently override the full state machine.
+This document is the single lifecycle owner for forward work as it moves from an idea into implementation, verification, and closeout. Workflow artifact documents define what a probe, plan, sketch, implementation spec, review, and closeout must contain. Consumer-local documentation rules define where active and archived artifacts live. Other documents may point to this lifecycle, but they must not recreate or silently override the full state machine.
 
 ## Canonical Flow
 
-Use this route for medium or large work that needs durable design and reviewable slices:
+The canonical route is:
 
 ```text
 Draft
--> Main Plan
--> Child Sketch
--> Child Implementation Spec
+-> (Probe)
+-> (Main Plan)
+-> (Child Sketch)
+-> Implementation Spec
 -> Implementation
 -> Verify
 -> Child Closeout
 -> next child or Main Plan Closeout
 ```
 
-A sketch is the default exploration stage for a non-trivial child, but it is not a mandatory ceremony. A child whose behavior, ownership seam, and implementation boundary are already small and clear may move directly from the main plan to a codebase-verified implementation spec.
+Parenthesized stages are optional. A probe preserves an unresolved problem before work is designed. A main plan is needed for medium or large work that requires durable design, decomposition, or sequencing, but a chore, narrow refactor, or one-feature fix may proceed without one. A sketch is only for a non-trivial child of a plan; it is never required for a standalone spec.
 
-Use this route for narrow work that still crosses enough boundaries to require a verified handoff:
+When a main plan is skipped, use this route:
 
 ```text
-Feature request, actionable probe, or tracked item
+Draft, actionable probe, feature request, or tracked item
 -> Standalone Implementation Spec
 -> Implementation
 -> Verify
@@ -33,15 +34,23 @@ Trivial fixes, copy changes, configuration edits, and other tightly bounded work
 
 ## Transition Gates
 
-### Draft to Main Plan
+### Draft to Probe
 
-Promote a draft when it needs stable requirements, substructure, explicit ordering, multiple reviewable slices, or a durable link:
+Create a probe using `probe_standard.md` when the problem, design tension, or ownership question needs a durable discussion artifact before a direction is chosen. A probe does not authorize implementation and may graduate to a plan, a standalone implementation spec, evergreen documentation, a decision note, or deletion.
+
+### Draft or Probe to Main Plan
+
+Promote a draft or resolved probe when it needs stable requirements, substructure, explicit ordering, multiple reviewable slices, or a durable link:
 
 1. Create a main plan using `plan_standard.md`.
 2. Move the draft's durable intent into the plan instead of retaining two requirement owners.
 3. Replace the draft with the consumer's single forward-work pointer.
 
 Before the plan becomes queued or active, its Goal, Requirements, Non-Goals, Acceptance Criteria, and necessary child overview must be complete. Decisions that would materially change product scope or observable behavior must be resolved in conversation rather than parked in the plan.
+
+### Draft or Probe to Standalone Implementation Spec
+
+Skip the main plan only when the work is a chore, narrow refactor, one-feature fix, or another tightly bounded change whose behavior, scope, ownership seam, and compatibility consequences are already clear. Create a standalone implementation spec using `implementation_spec_standard.md`; it remains the required executable handoff before implementation.
 
 ### Main Plan to Child Sketch
 
@@ -53,9 +62,9 @@ Create a child sketch when the durable behavior is settled but the likely implem
 
 Skip this transition when the child boundary is already narrow and clear enough for direct spec-time verification.
 
-### Sketch to Implementation Spec
+### Main Plan or Sketch to Implementation Spec
 
-Convert the next actionable child into an implementation spec only after product behavior, compatibility promises, scope, and numerical meaning are locked:
+Convert the next actionable child into an implementation spec only after product behavior, compatibility promises, scope, and numerical meaning are locked. A plan child may skip the sketch when its boundary is already clear:
 
 1. Re-read the relevant live codebase and create the implementation model using `implementation_spec_standard.md`.
 2. Use the sketch as context only. Verify or replace every file, symbol, relationship, and sequencing claim.
@@ -128,6 +137,7 @@ Platform-only commands, such as a dedicated engine test procedure, may live belo
 Consumers may choose different filenames, but each tracked item has one active home and one owner for each direction of time:
 
 - Draft: discussion has substance but no durable plan yet.
+- Probe: optional exploratory artifact with an unresolved or newly resolved problem.
 - Queued plan: a main plan exists but is not the current execution flow.
 - Active: a handoff, implementation, or verification step is in progress or ready to execute.
 - Compact item: a small chore or bug does not require a main plan.
