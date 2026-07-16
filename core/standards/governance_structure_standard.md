@@ -55,6 +55,8 @@ Keep a contract in the consuming project when it depends on that project's:
 
 Project-local rules may refine shared defaults and may explicitly supersede them when the architecture requires it. They must not copy a shared rule for convenience.
 
+Every consumer implements the required project-local startup, Git, and test operation interfaces defined by `consumer_operations_standard.md`. The interface is shared; the effective permissions, environment constraints, and executable commands remain project-owned.
+
 ## Canonical Ownership
 
 Every governance rule has exactly one canonical owner.
@@ -100,6 +102,7 @@ Changes to governance structure must update every affected discovery and verific
 - README navigation.
 - `consumer_manifest.json`.
 - Canonical and consumer verifiers.
+- Consumer templates and scaffolding when a required project-local interface changes.
 - Release notes when the public consumer contract changes.
 
 A structural refactor is incomplete while an old path still appears canonical, a new owner is undiscoverable, or layer startup cannot reach the current owner.

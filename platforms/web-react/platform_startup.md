@@ -9,7 +9,7 @@ Load this file after `core/agent_rules/foundation_startup.md` when the consuming
 - Before changing DOM interaction, responsive UI, focus, reduced motion, or assistive state, read `dev/foundation/platforms/web-react/standards/web_accessibility_standard.md`.
 - Before changing browser APIs, lifecycle behavior, service workers, cache policy, or installability, read `dev/foundation/platforms/web-react/standards/web_platform_standard.md`; cache work also reads `dev/foundation/platforms/web-react/skills/service-worker-cache-versioning.md`.
 - Before changing IndexedDB layout, browser persistence, hydration, or storage recovery, read `dev/foundation/core/standards/persistence_standard.md`, `dev/foundation/platforms/web-react/standards/browser_persistence_standard.md`, and `dev/foundation/platforms/web-react/skills/indexeddb-upgrade-transactions.md`.
-- Before adding tests, read `dev/foundation/platforms/web-react/standards/testing_standard.md` plus the consumer's concrete test and build commands.
+- Before adding or running tests, read `dev/foundation/platforms/web-react/standards/testing_standard.md` plus the consumer's `dev/agent_rules/test_operations.md` for concrete test and build commands.
 
 ## Project Boundary
 

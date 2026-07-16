@@ -17,6 +17,9 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "core -> platform -> profiles in declared order -> consuming project",
         "foundation.config.json",
         "governance_structure_standard.md",
+        "consumer_operations_standard.md",
+        "dev/agent_rules/git_operations.md",
+        "dev/agent_rules/test_operations.md",
         "work_lifecycle.md",
     ),
     "core/agent_rules/lint_before_finish.md": (
@@ -30,6 +33,14 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "README files provide navigation",
         "Every governance rule has exactly one canonical owner",
         "## Classification Checklist",
+    ),
+    "core/standards/consumer_operations_standard.md": (
+        "## Required Files",
+        "dev/agent_rules/agent_startup.md",
+        "dev/agent_rules/git_operations.md",
+        "dev/agent_rules/test_operations.md",
+        "single source of truth for every agent-run test",
+        "tools/scaffold_consumer.py",
     ),
     "core/standards/persistence_standard.md": (
         "## Ownership Boundary",
@@ -300,6 +311,47 @@ def verify_manifest(errors: list[str]) -> None:
         startup = entry.get("startup")
         if not isinstance(startup, str) or not (ROOT / startup).is_file():
             errors.append(f"missing platform startup: {platform!r}")
+        forbidden = entry.get("forbidden_consumer_files", [])
+        if not isinstance(forbidden, list) or not all(isinstance(item, str) for item in forbidden):
+            errors.append(f"platform forbidden_consumer_files must be string paths: {platform!r}")
+
+    contract = manifest.get("consumer_contract", {})
+    if not isinstance(contract, dict):
+        errors.append("consumer manifest consumer_contract must be an object")
+        contract = {}
+    rules = contract.get("required_rules", {})
+    if not isinstance(rules, dict):
+        errors.append("consumer manifest required_rules must be an object")
+        rules = {}
+    required_rule_names = {"agent_startup", "git_operations", "test_operations"}
+    if set(rules) != required_rule_names:
+        errors.append("consumer manifest must declare agent_startup, git_operations, and test_operations rules")
+    for name, rule in rules.items():
+        if not isinstance(rule, dict):
+            errors.append(f"consumer rule entry must be an object: {name!r}")
+            continue
+        relative = rule.get("path")
+        if not isinstance(relative, str) or not relative.startswith("dev/agent_rules/"):
+            errors.append(f"consumer rule must use a dev/agent_rules path: {name!r}")
+        fragments = rule.get("required_fragments")
+        if not isinstance(fragments, list) or not fragments or not all(isinstance(item, str) for item in fragments):
+            errors.append(f"consumer rule must declare required string fragments: {name!r}")
+
+        template = rule.get("template")
+        platform_templates = rule.get("platform_templates")
+        if isinstance(template, str):
+            if not (ROOT / template).is_file():
+                errors.append(f"missing consumer rule template: {template!r}")
+            if platform_templates is not None:
+                errors.append(f"consumer rule cannot declare both template modes: {name!r}")
+        elif isinstance(platform_templates, dict):
+            if set(platform_templates) != set(platforms):
+                errors.append(f"consumer rule platform templates must cover every platform: {name!r}")
+            for platform, template_path in platform_templates.items():
+                if not isinstance(template_path, str) or not (ROOT / template_path).is_file():
+                    errors.append(f"missing {platform!r} consumer rule template: {template_path!r}")
+        else:
+            errors.append(f"consumer rule must declare a template: {name!r}")
     profiles = manifest.get("profiles", {})
     if not isinstance(profiles, dict):
         errors.append("consumer manifest profiles entry must be an object")

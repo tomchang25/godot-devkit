@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify that a project selects supported layers from its pinned foundation."""
+"""Verify selected foundation layers and required project-local operation contracts."""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ def resolve_v2(
     config: dict[str, Any],
     manifest: dict[str, Any],
     errors: list[str],
-) -> str:
+) -> tuple[str, str | None]:
     expected_schema = manifest.get("schema_version")
     if config.get("schema_version") != expected_schema:
         errors.append(
@@ -53,8 +53,10 @@ def resolve_v2(
     if not isinstance(platform, str) or platform not in platforms:
         errors.append(f"unknown foundation platform: {platform!r}")
         platform_entry: dict[str, Any] = {}
+        resolved_platform = None
     else:
         platform_entry = platforms[platform]
+        resolved_platform = platform
 
     selected_profiles = config.get("profiles", [])
     if not isinstance(selected_profiles, list) or not all(isinstance(item, str) for item in selected_profiles):
@@ -81,7 +83,57 @@ def resolve_v2(
         errors.append(f"missing platform startup for {platform!r}")
 
     profile_label = ", ".join(selected_profiles) if selected_profiles else "no profiles"
-    return f"{platform}; {profile_label}"
+    return f"{platform}; {profile_label}", resolved_platform
+
+
+def verify_consumer_contract(
+    *,
+    root: Path,
+    platform: str,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    contract = manifest.get("consumer_contract", {})
+    rules = contract.get("required_rules", {}) if isinstance(contract, dict) else {}
+    if not isinstance(rules, dict) or not rules:
+        errors.append("consumer manifest has no required operation rules")
+        return
+
+    for name, rule in rules.items():
+        if not isinstance(rule, dict):
+            errors.append(f"invalid consumer rule entry: {name!r}")
+            continue
+        relative = rule.get("path")
+        if not isinstance(relative, str):
+            errors.append(f"consumer rule path is missing: {name!r}")
+            continue
+        path = root / relative
+        if not path.is_file():
+            errors.append(f"missing required consumer rule: {relative}")
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError as error:
+            errors.append(f"cannot read required consumer rule {relative}: {error}")
+            continue
+
+        fragments = rule.get("required_fragments", [])
+        if not isinstance(fragments, list) or not all(isinstance(item, str) for item in fragments):
+            errors.append(f"invalid required fragments for consumer rule: {name!r}")
+            continue
+        for fragment in fragments:
+            if fragment not in text:
+                errors.append(f"consumer rule {relative} must reference {fragment!r}")
+
+    platforms = manifest.get("platforms", {})
+    platform_entry = platforms.get(platform, {}) if isinstance(platforms, dict) else {}
+    forbidden = platform_entry.get("forbidden_consumer_files", []) if isinstance(platform_entry, dict) else []
+    if not isinstance(forbidden, list) or not all(isinstance(item, str) for item in forbidden):
+        errors.append(f"invalid forbidden consumer files for platform: {platform!r}")
+        return
+    for relative in forbidden:
+        if (root / relative).exists():
+            errors.append(f"legacy consumer rule must be removed after consolidation: {relative}")
 
 
 def main() -> int:
@@ -92,11 +144,18 @@ def main() -> int:
     manifest = read_json(MANIFEST, errors)
     config_path = root / manifest.get("config_path", "dev/foundation.config.json")
     if config_path.is_file():
-        label = resolve_v2(
+        label, platform = resolve_v2(
             config=read_json(config_path, errors),
             manifest=manifest,
             errors=errors,
         )
+        if platform is not None:
+            verify_consumer_contract(
+                root=root,
+                platform=platform,
+                manifest=manifest,
+                errors=errors,
+            )
     else:
         errors.append("missing required dev/foundation.config.json")
         label = "unknown platform"

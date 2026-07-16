@@ -18,6 +18,8 @@ platforms/
 profiles/
   action-rpg/                 Action-entity architecture; currently constrained to Godot
   sim-management/             Store/System management architecture; currently constrained to Godot
+tools/
+  consumer_templates/         Tool-owned starters for required project-local operation contracts
 ```
 
 `core/standards/governance_structure_standard.md` is the canonical owner for placement, language, extension, README, ownership, and addendum rules. This README is a navigation and installation surface only.
@@ -53,7 +55,7 @@ A Web React consumer without an architecture profile uses:
 }
 ```
 
-The selected platform is required. Profiles are optional and ordered. The consumer verifier rejects unknown platforms, duplicate profiles, unsupported platform/profile combinations, and missing selected startup documents.
+The selected platform is required. Profiles are optional and ordered. The consumer verifier rejects unknown platforms, duplicate profiles, unsupported platform/profile combinations, missing selected startup documents, missing project-local operation contracts, broken startup references, and platform-declared legacy owners.
 
 ## Consumer Layout
 
@@ -61,7 +63,10 @@ The selected platform is required. Profiles are optional and ordered. The consum
 dev/
   foundation/                 This repository, pinned to one commit
   foundation.config.json      Selected platform and profiles
-  agent_rules/                Project-local environment, permissions, and commands
+  agent_rules/
+    agent_startup.md           Required project snapshot and discovery entry
+    git_operations.md          Required authoritative Git permission contract
+    test_operations.md         Required authoritative test and validation contract
   standards/                  Project-only standards and shared-rule addenda
   workflows/                  Project-only workflows and commands
   skills/                     Project-only recipes and hazard cards
@@ -70,6 +75,24 @@ dev/
 ```
 
 Template repositories may install the foundation below a documented base subtree. Their startup entry must identify that subtree as the effective consumer root.
+
+## Required Consumer Operations
+
+`core/standards/consumer_operations_standard.md` defines the three required project-local operation contracts. The foundation owns their interface; each project owns its effective content.
+
+After creating `dev/foundation.config.json`, scaffold missing contracts from the pinned foundation:
+
+```powershell
+python dev/foundation/tools/scaffold_consumer.py --root . --project-name "My Game"
+```
+
+The scaffold creates only missing files and never overwrites an existing project-owned rule. Common templates provide the startup and Git shapes; the selected platform provides the test-operations shape. Scaffolded test defaults declare automation unavailable until the consumer records its real commands, environment, pass criteria, and reporting boundary.
+
+Run the consumer verifier after customizing the generated contracts:
+
+```powershell
+python dev/foundation/tools/verify_consumer.py --root .
+```
 
 ## Ownership
 
@@ -140,6 +163,8 @@ When upgrading from a pre-schema-2 consumer, create `dev/foundation.config.json`
 
 When upgrading from v0.4.x to v0.5.0, remove consumer files whose only purpose is to provide a `# Shared Foundation Pointer` compatibility path. Keep project-owned rules and addenda, which may link directly to their canonical owners under `dev/foundation`. No compatibility files need to be recreated. Review, commit, and push the submodule pin and consumer migration from the consuming project.
 
+When upgrading from v0.5.0 to v0.6.0, scaffold or create the required `agent_startup.md`, `git_operations.md`, and `test_operations.md` project-local contracts. Godot consumers must consolidate `godot_test_check.md` and `godot_tests.md` into `test_operations.md`, update callers, and remove both legacy files before verification.
+
 ## Verification
 
 From a consuming project root:
@@ -155,7 +180,7 @@ python tools/verify_canonical_contracts.py
 python tools/test_verify_consumer.py
 ```
 
-The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, layer startup paths, and profile constraints. Schema-2 fixtures cover both Godot and Web React consumers.
+The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, layer startup paths, operation-contract templates, and profile constraints. Schema-2 fixtures cover scaffolded Godot and Web React consumers, missing contracts, broken discovery references, legacy owner rejection, and invalid configuration.
 
 ## Canonical Baseline Policy
 

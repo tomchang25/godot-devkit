@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+- Require every consumer to own `agent_startup.md`, `git_operations.md`, and one authoritative `test_operations.md` contract.
+- Add common and platform-specific consumer templates plus a non-overwriting scaffold command for missing operation rules.
+- Extend consumer verification to reject missing operation contracts, broken startup references, and legacy split Godot test owners.
+
 ## 0.5.0
 
 - Remove `compatibility_pointers` from the consumer manifest and stop requiring duplicated discovery files under consumer `dev/` paths.

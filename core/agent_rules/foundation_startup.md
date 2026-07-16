@@ -6,7 +6,7 @@ This repository is the shared governance foundation. In a consuming project:
 
 1. Read this file.
 2. Read `dev/foundation.config.json` when it exists. Load the selected platform startup from `dev/foundation/platforms/<platform>/platform_startup.md`, then load every selected profile startup from `dev/foundation/profiles/<profile>/profile_startup.md`.
-3. Read the consuming project's `dev/agent_rules/agent_startup.md` for its snapshot, environment, tools, permissions, verification commands, and explicit project-local overrides.
+3. Read the consuming project's `dev/agent_rules/agent_startup.md` for its snapshot, environment, tools, and explicit project-local overrides. That startup must route Git decisions to `dev/agent_rules/git_operations.md` and test or validation operations to `dev/agent_rules/test_operations.md`.
 
 When working inside a template subtree, treat the template's documented base directory as the consuming project root so the same `dev/` paths resolve below that base.
 
@@ -27,6 +27,9 @@ Do not copy a shared rule into a consuming project. Read it directly from the pi
 ## Shared Triggers
 
 - Before adding, moving, or classifying governance documents, read `core/standards/governance_structure_standard.md`.
+- Before creating or changing the required project-local startup, Git, or test operation contracts, read `core/standards/consumer_operations_standard.md`.
+- Before any Git mutation or recovery operation, read the consuming project's `dev/agent_rules/git_operations.md`.
+- Before running any test, build, import, screenshot, smoke, or other platform validation operation, read the consuming project's `dev/agent_rules/test_operations.md`.
 - Before introducing a Controller, System, Store, Service, manager, save provider, or another runtime state owner, read `core/standards/runtime_ownership.md` plus the selected profiles and relevant project-local standards.
 - Before changing canonical, transient, presentation, or derived state ownership, read `core/standards/runtime_ownership.md` plus the selected profile.
 - Before changing persistence, hydration, save scheduling, a persisted schema, or a compatibility promise, read `core/standards/persistence_standard.md`, `core/agent_rules/save_migrations.md`, and the platform and project-local persistence contracts.

@@ -11,4 +11,4 @@ Before finishing, run the non-mutating verification required by the consuming pr
 
 Prefer the smallest verification that proves the touched surface. Do not run broad tests for documentation-only work.
 
-See the consuming project's standards-enforcement and startup documents for available commands, active checks, and failure-reporting requirements.
+See the consuming project's `dev/agent_rules/test_operations.md`, standards-enforcement contract, and startup document for available commands, active checks, and failure-reporting requirements.

@@ -4,9 +4,35 @@
   "core": {
     "startup": "core/agent_rules/foundation_startup.md"
   },
+  "consumer_contract": {
+    "required_rules": {
+      "agent_startup": {
+        "path": "dev/agent_rules/agent_startup.md",
+        "template": "tools/consumer_templates/common/agent_startup.md",
+        "required_fragments": ["git_operations.md", "test_operations.md"]
+      },
+      "git_operations": {
+        "path": "dev/agent_rules/git_operations.md",
+        "template": "tools/consumer_templates/common/git_operations.md",
+        "required_fragments": ["dev/foundation/core/agent_rules/git_operations.md"]
+      },
+      "test_operations": {
+        "path": "dev/agent_rules/test_operations.md",
+        "platform_templates": {
+          "godot": "tools/consumer_templates/platforms/godot/test_operations.md",
+          "web-react": "tools/consumer_templates/platforms/web-react/test_operations.md"
+        },
+        "required_fragments": ["# Test Operations"]
+      }
+    }
+  },
   "platforms": {
     "godot": {
-      "startup": "platforms/godot/platform_startup.md"
+      "startup": "platforms/godot/platform_startup.md",
+      "forbidden_consumer_files": [
+        "dev/agent_rules/godot_test_check.md",
+        "dev/agent_rules/godot_tests.md"
+      ]
     },
     "web-react": {
       "startup": "platforms/web-react/platform_startup.md"
