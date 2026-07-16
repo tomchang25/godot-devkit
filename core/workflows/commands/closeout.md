@@ -1,5 +1,7 @@
 Close out completed work: update CHANGELOG, TODO, archive plan/spec files, and suggest running `/commit-msg` for the final commit message.
 
+Read `dev/workflows/closeout_standard.md` and `dev/workflows/work_lifecycle.md` before mutating documentation or tracking. This command detects and processes the concrete scope; the standard owns closeout quality and the lifecycle owns transition gates.
+
 This command never stages, commits, pushes, creates PRs, or invokes `/pr-review`. It is a documentation cleanup workflow only.
 
 ## Detect mode
@@ -22,6 +24,6 @@ Run `git status` and `git branch --show-current`:
    - Keep bullets outcome-focused per the change-summary standard.
    - If the completed scope is dev-process-only maintenance, skip the CHANGELOG step. This includes closeout workflow changes, CHANGELOG/TODO edits, plan archival, and tracking cleanup.
 4. Remove each plan's one-line pointer from `TODO.md` `## Active` (or `## Plan` if it was queued). If `## Active` becomes empty, replace the section content with "Nothing currently in progress."
-5. Move each plan file and its sibling spec/scout files from `dev/docs/plans/` to `dev/docs/archived/`.
+5. Move each plan file and its sibling spec/sketch files from `dev/docs/plans/` to `dev/docs/archived/`.
 6. Run `git status` to show the final state.
 7. Suggest running `/commit-msg` to generate a commit message for the completed scope.

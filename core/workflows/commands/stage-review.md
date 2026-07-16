@@ -11,11 +11,11 @@ The review scope is staged files only. Do not include unstaged or untracked file
 3. Run `git diff --cached --stat` for a summary.
 4. If a plan/spec file is among the staged files under `dev/docs/plans/`, read it as the spec.
 5. Read the full current contents of every staged file that can be reviewed as text, then read the staged diff with `git diff --cached -- <file>` to understand the exact staged changes.
-6. Search related codebase context for changed APIs, constants, data IDs, node paths, signals, resources, command workflows, and standards references. Explicitly search for stale names or removed behavior introduced by the staged diff.
-7. Run `python dev/tools/lint_standards.py --files <all staged .gd and .tscn files>` when either file type is staged. Include project-local path restrictions only when the linter itself requires them.
+6. Search related repository context for changed APIs, constants, identifiers, artifact paths, events, schemas, command workflows, and standards references. Explicitly search for stale names or removed behavior introduced by the staged diff.
+7. Run the non-mutating staged-file checks required by the consuming project's `dev/agent_rules/lint_before_finish.md` for the file types in scope. Do not substitute a platform-specific command that the consumer has not selected.
 8. Apply the review standard's robustness cases to the full current contents, not only the changed hunks.
 9. Report findings and summary using `dev/workflows/review_standard.md`, including the required per-file review summary, stale/redundant result, robustness result, and standards/lint/test result.
 
 ## Reporting Language
 
-Follow `dev/workflows/review_standard.md` for the review report language split. Keep required verdict labels from `dev/workflows/review_standard.md` (`pass`, `needs changes`, `blocked`) in English.
+Follow `dev/workflows/review_standard.md`. Keep required verdict labels (`pass`, `needs changes`, `blocked`) in English.

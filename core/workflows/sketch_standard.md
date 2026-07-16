@@ -2,14 +2,16 @@
 
 Use this standard to produce an exploratory child document between a plan and an implementation spec. A sketch is a thinking and decomposition artifact: it can record a candidate implementation shape, relevant codebase context, risks, and sequencing notes before the final spec is written.
 
+`work_lifecycle.md` owns the transitions into and out of a sketch. This file owns only the sketch artifact's required content and quality.
+
 A sketch is never the executable handoff. When implementation begins, write an implementation spec from the current codebase per `dev/workflows/implementation_spec_standard.md`. The sketch may be used as context, but the spec author verifies or replaces every codebase claim.
 
 ## Lifecycle Position
 
-Main flow:
+Canonical route:
 
 ```text
-probe -> plan -> sketch -> implementation spec
+Draft -> Main Plan -> Child Sketch -> Child Implementation Spec
 ```
 
 Small or narrow work may skip both plan and sketch and go directly from a feature request or actionable probe to an implementation spec. For plan-backed work, use a sketch for most non-trivial children; skip it only when the child boundary is already small and obvious enough for the spec author to verify directly.

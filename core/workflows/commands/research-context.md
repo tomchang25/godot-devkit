@@ -26,13 +26,13 @@ Before searching, read:
 ## Steps
 
 1. Restate the research target in one compact sentence.
-2. Identify likely domains, systems, scenes, data, tests, docs, and standards from the brief.
-3. Search the repo for relevant terms, symbols, scene names, data names, and related concepts. Prefer `Glob` and `Grep` over shell text tools.
+2. Identify likely domains, systems, source, configuration, data, tests, docs, and standards from the brief.
+3. Search the repository for relevant terms, symbols, filenames, identifiers, and related concepts. Use the environment's fastest available file and text search tools.
 4. Read the most relevant files directly. Do not bulk-read unrelated files or dump broad directories.
 5. Trace the current ownership of relevant data and behavior, the surface that the intended work will replace, migrate, or rewire, and the existing behavioral contracts that must survive that work.
 6. Follow discovered references when they materially change that context, but stop before turning retrieval into implementation design.
 7. Distinguish an expected old path that the brief already intends to replace from a genuine conflict that would affect behavior outside the intended refactor. Do not report the former as a conflict merely because it differs from the target design.
-8. Identify only unresolved decisions that require the user to choose because they would change a requirement, player-observable behavior, product scope, or numerical meaning. Do not elevate implementation architecture, Resource/reference shape, schema layout, file placement, or other choices the spec author can resolve from established requirements and codebase constraints. Present evidence and decision boundaries without choosing for the user.
+8. Identify only unresolved decisions that require the user to choose because they would change a requirement, player-observable behavior, product scope, or numerical meaning. Do not elevate implementation architecture, artifact/reference shape, schema layout, file placement, or other choices the spec author can resolve from established requirements and codebase constraints. Present evidence and decision boundaries without choosing for the user.
 9. Report only codebase context. Do not propose code changes unless the user asks for implementation planning.
 
 ## Output
@@ -42,7 +42,7 @@ Return a concise research map with these sections, in this order:
 1. **Research Target** — the inferred topic and scope.
 2. **Relevant Codebase Context** — one cohesive account combining current ownership of relevant data and behavior, the refactor surface that must be replaced, migrated, or rewired, and the existing contracts that must survive. Include constraining rules or docs where they materially affect that context. Organize by system relationship or responsibility rather than by file, and cite file paths only where they help substantiate a claim.
 3. **Spec-Time Decisions** — unresolved choices that must be settled by the user before an implementation spec can be written because each choice would change a requirement, player-observable behavior, product scope, or numerical meaning. State the evidence and behavioral boundary without recommending or selecting an option. Do not include technical design work the spec author can resolve from the approved intent and live code. Omit this section when no user decision is required.
-4. **Summary** — a compact final synthesis written in Traditional Chinese. State what the codebase context means for the intended work, what must be preserved, and whether any spec-time decisions remain. Do not introduce facts or recommendations that are absent from the preceding sections.
+4. **Summary** — a compact final synthesis written in the user's language. State what the repository context means for the intended work, what must be preserved, and whether any spec-time decisions remain. Do not introduce facts or recommendations that are absent from the preceding sections.
 
 ## Guardrails
 

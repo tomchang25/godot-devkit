@@ -33,7 +33,7 @@ type(scope): concise summary
 ```
 
 4. Keep the body to 2-3 bullets unless the staged diff is truly tiny, in which case a subject line alone is fine.
-5. Follow `dev/skills/conventional_commits.md`, `dev/standards/change_summary_standard.md`, and the CLAUDE.md commit conventions:
+5. Follow `dev/skills/conventional_commits.md`, `dev/standards/change_summary_standard.md`, and any consumer-local commit conventions:
    - Do not hard-wrap prose.
    - Do not include TODO/CHANGELOG/archive/closeout operations in the body unless those files are the actual primary product of the change.
    - Describe what changed in the codebase or durable project rules, not what command was run.

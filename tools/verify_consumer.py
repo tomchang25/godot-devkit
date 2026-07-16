@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 
 FOUNDATION = Path(__file__).resolve().parent.parent
@@ -15,8 +16,136 @@ POINTER_HEADER = "# Shared Foundation Pointer"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path.cwd(), help="consuming Godot project root")
+    parser.add_argument("--root", type=Path, default=Path.cwd(), help="consuming game project root")
     return parser.parse_args()
+
+
+def read_json(path: Path, errors: list[str]) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        errors.append(f"invalid JSON in {path}: {error}")
+        return {}
+    if not isinstance(value, dict):
+        errors.append(f"expected a JSON object in {path}")
+        return {}
+    return value
+
+
+def verify_pointer(
+    *,
+    dev: Path,
+    local: str,
+    canonical: str,
+    errors: list[str],
+) -> None:
+    pointer = dev / local
+    canonical_reference = f"dev/foundation/{canonical}"
+    canonical_path = FOUNDATION / canonical
+
+    if not pointer.is_file():
+        errors.append(f"missing compatibility pointer: dev/{local}")
+        return
+
+    text = pointer.read_text(encoding="utf-8")
+    if not text.startswith(POINTER_HEADER):
+        errors.append(f"local shared-rule fork: dev/{local}")
+    if canonical_reference not in text:
+        errors.append(f"wrong canonical target: dev/{local} -> {canonical_reference}")
+    if not canonical_path.is_file():
+        errors.append(f"missing canonical document: {canonical_reference}")
+
+
+def resolve_v2(
+    *,
+    config: dict[str, Any],
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> tuple[str, list[dict[str, str]]]:
+    expected_schema = manifest.get("schema_version")
+    if config.get("schema_version") != expected_schema:
+        errors.append(
+            f"unsupported foundation config schema: {config.get('schema_version')!r}; expected {expected_schema!r}"
+        )
+
+    platform = config.get("platform")
+    platforms = manifest.get("platforms", {})
+    if not isinstance(platform, str) or platform not in platforms:
+        errors.append(f"unknown foundation platform: {platform!r}")
+        platform_entry: dict[str, Any] = {}
+    else:
+        platform_entry = platforms[platform]
+
+    selected_profiles = config.get("profiles", [])
+    if not isinstance(selected_profiles, list) or not all(isinstance(item, str) for item in selected_profiles):
+        errors.append("foundation config profiles must be an array of strings")
+        selected_profiles = []
+    elif len(selected_profiles) != len(set(selected_profiles)):
+        errors.append("foundation config profiles must not contain duplicates")
+
+    profile_manifest = manifest.get("profiles", {})
+    for profile in selected_profiles:
+        entry = profile_manifest.get(profile)
+        if not isinstance(entry, dict):
+            errors.append(f"unknown foundation profile: {profile!r}")
+            continue
+        allowed_platforms = entry.get("platforms", [])
+        if platform not in allowed_platforms:
+            errors.append(f"profile {profile!r} does not support platform {platform!r}")
+        startup = entry.get("startup")
+        if not isinstance(startup, str) or not (FOUNDATION / startup).is_file():
+            errors.append(f"missing profile startup for {profile!r}")
+
+    startup = platform_entry.get("startup")
+    if platform_entry and (not isinstance(startup, str) or not (FOUNDATION / startup).is_file()):
+        errors.append(f"missing platform startup for {platform!r}")
+
+    pointers: list[dict[str, str]] = []
+    for layer in (manifest.get("core", {}), platform_entry):
+        layer_pointers = layer.get("compatibility_pointers", []) if isinstance(layer, dict) else []
+        if not isinstance(layer_pointers, list):
+            errors.append("manifest compatibility_pointers must be an array")
+            continue
+        pointers.extend(item for item in layer_pointers if isinstance(item, dict))
+
+    profile_label = ", ".join(selected_profiles) if selected_profiles else "no profiles"
+    return f"{platform}; {profile_label}", pointers
+
+
+def resolve_legacy(
+    *,
+    dev: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> tuple[str, list[dict[str, str]]]:
+    legacy = manifest.get("legacy", {})
+    profile_path = dev.parent / legacy.get("profile_path", "dev/foundation.profile")
+    if not profile_path.is_file():
+        errors.append("missing dev/foundation.config.json and legacy dev/foundation.profile")
+        profile = ""
+    else:
+        profile = profile_path.read_text(encoding="utf-8").strip()
+
+    platform = legacy.get("platform", "godot")
+    profile_manifest = manifest.get("profiles", {})
+    if profile != "core":
+        entry = profile_manifest.get(profile)
+        if not isinstance(entry, dict):
+            errors.append(f"unknown legacy foundation profile: {profile!r}")
+        else:
+            if platform not in entry.get("platforms", []):
+                errors.append(f"legacy profile {profile!r} does not support platform {platform!r}")
+            startup = entry.get("startup")
+            if not isinstance(startup, str) or not (FOUNDATION / startup).is_file():
+                errors.append(f"missing profile startup for {profile!r}")
+
+    relative_pointers = legacy.get("compatibility_pointers", [])
+    pointers = [
+        {"local": relative, "canonical": f"core/{relative}"}
+        for relative in relative_pointers
+        if isinstance(relative, str)
+    ]
+    return f"legacy {platform}; {profile or 'unknown profile'}", pointers
 
 
 def main() -> int:
@@ -25,38 +154,40 @@ def main() -> int:
     dev = root / "dev"
     errors: list[str] = []
 
-    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    profile_path = dev / "foundation.profile"
-    if not profile_path.is_file():
-        errors.append("missing dev/foundation.profile")
-        profile = ""
-    else:
-        profile = profile_path.read_text(encoding="utf-8").strip()
-        if profile not in manifest["profiles"]:
-            errors.append(f"unknown foundation profile: {profile!r}")
-        elif profile != "core" and not (FOUNDATION / "profiles" / profile / "profile_startup.md").is_file():
-            errors.append(f"missing profile startup for {profile!r}")
+    manifest = read_json(MANIFEST, errors)
+    config_path = root / manifest.get("config_path", "dev/foundation.config.json")
+    legacy_path = root / manifest.get("legacy", {}).get("profile_path", "dev/foundation.profile")
 
-    for relative in manifest["compatibility_pointers"]:
-        pointer = dev / relative
-        canonical = f"dev/foundation/core/{relative}"
-        if not pointer.is_file():
-            errors.append(f"missing compatibility pointer: dev/{relative}")
+    if config_path.is_file():
+        if legacy_path.is_file():
+            errors.append("remove legacy dev/foundation.profile when dev/foundation.config.json is present")
+        label, pointers = resolve_v2(
+            config=read_json(config_path, errors),
+            manifest=manifest,
+            errors=errors,
+        )
+    else:
+        label, pointers = resolve_legacy(dev=dev, manifest=manifest, errors=errors)
+
+    seen_local: set[str] = set()
+    for pointer in pointers:
+        local = pointer.get("local")
+        canonical = pointer.get("canonical")
+        if not isinstance(local, str) or not isinstance(canonical, str):
+            errors.append(f"invalid manifest pointer entry: {pointer!r}")
             continue
-        text = pointer.read_text(encoding="utf-8")
-        if not text.startswith(POINTER_HEADER):
-            errors.append(f"local shared-rule fork: dev/{relative}")
-        if canonical not in text:
-            errors.append(f"wrong canonical target: dev/{relative} -> {canonical}")
-        if not (FOUNDATION / "core" / relative).is_file():
-            errors.append(f"missing canonical document: {canonical}")
+        if local in seen_local:
+            errors.append(f"duplicate local compatibility pointer in selected layers: dev/{local}")
+            continue
+        seen_local.add(local)
+        verify_pointer(dev=dev, local=local, canonical=canonical, errors=errors)
 
     if errors:
         for error in errors:
             print(f"foundation: ERROR: {error}")
         return 1
 
-    print(f"foundation: OK ({profile}, {len(manifest['compatibility_pointers'])} pointers)")
+    print(f"foundation: OK ({label}, {len(pointers)} pointers)")
     return 0
 
 

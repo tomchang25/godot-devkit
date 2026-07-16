@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0
+
+- Establish an engine-neutral governance core with a canonical work lifecycle and governance-structure standard.
+- Move irreducible Godot, GDScript, scene, autoload, and engine UI contracts into a dedicated Godot platform layer while retaining legacy path shims.
+- Generalize shared research, specification, review, staged-review, and verification workflows so consuming projects own concrete tool commands.
+- Add schema-2 consumer configuration with independent platform and profile selection while preserving verified legacy Godot consumers.
+- Keep `foundation.profile` and old `core/` platform paths as migration shims; consumers adopting `foundation.config.json` must retarget platform compatibility pointers to `platforms/godot/`.
+
 ## 0.3.0
 
 - Move the simulation-management preset's game-specific runtime archetype tree from reusable infrastructure into a game-owned domain layer.

@@ -28,7 +28,7 @@ The logical changes the PR makes. Format is free for simple PRs: use prose or a 
 
 For a PR large enough to warrant grouping, use `###` subheadings inside `## Changes`. Do not use bold-label bullets as section substitutes (for example, avoid `- **Enemy AI** — ...` or `**Enemy AI** — ...`). Pick whichever grouping fits the PR; default to **by area** when in doubt:
 
-- **By area / module** (default) — group bullets under `###` headings for the module or scene they touch (`### Scene registry`, `### Navigation callers`, …). Matches how a reviewer reads the diff, so it is the safe choice for most PRs.
+- **By area / module** (default) — group bullets under `###` headings for the module or subsystem they touch (`### Route registry`, `### Navigation callers`, …). Matches how a reviewer reads the diff, so it is the safe choice for most PRs.
 - **By feature / theme** — group under each self-contained sub-feature or theme (`### Dodge-cancel timing`, `### Incidental fixes`, …). Use only when one PR genuinely carries several independent strands; if the strands are fully independent, prefer splitting into separate PRs instead.
 
 ### `## Testing` (optional)
@@ -64,7 +64,7 @@ Light attacks previously locked the player into the full animation, making comba
 ## Changes
 
 - Add dodge-cancel window to light attack animations
-- Expose cancel timing in attack resource definitions
+- Expose cancel timing in attack definitions
 ```
 
 Grouped PR:
@@ -74,18 +74,18 @@ refactor(routing): centralize scene navigation
 
 ## Summary
 
-Several screens owned direct scene transitions and duplicated route paths. This moves navigation behind `SceneRouter` so route registration and payload hand-off have one owner.
+Several screens owned direct transitions and duplicated route paths. This moves navigation behind the shared router so route registration and payload hand-off have one owner.
 
 ## Changes
 
-### Scene registry
+### Route registry
 
 - Register stable route keys and the default gameplay route
 - Keep unit-test navigation available through the registry
 
 ### Navigation callers
 
-- Route screens through `SceneRouter.go_to()`
+- Route screens through the shared navigation API
 - Replace duplicated scene paths with semantic route keys
 
 ### Payload handling
@@ -95,5 +95,5 @@ Several screens owned direct scene transitions and duplicated route paths. This 
 
 ## Testing
 
-- `python dev/tools/lint_standards.py --files global/autoloads/scene_router/scene_router.gd game/ui/start_page.gd`
+- `<consumer verification command for the changed routing files>`
 - Manually verified the start page, default gameplay route, and payload-backed detail route

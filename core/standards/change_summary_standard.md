@@ -27,14 +27,14 @@ Describe the durable outcome, not the paperwork or step-by-step mechanics.
 Good commit body:
 
 ```text
-- Add route payload validation to SceneRouter transitions
-- Surface invalid route IDs through the debug gate
+- Add payload validation to navigation transitions
+- Surface invalid route IDs through the diagnostics boundary
 ```
 
 Bad commit body:
 
 ```text
-- Edited scene_router.gd
+- Edited routing files
 - Updated TODO.md and archived the plan
 - Ran closeout
 ```
@@ -42,20 +42,20 @@ Bad commit body:
 Good CHANGELOG entry:
 
 ```text
-- 2026-06-28 - [scene_routing] SceneRouter now reports invalid route IDs before attempting a transition
+- 2026-06-28 - [routing] Navigation now reports invalid route IDs before attempting a transition
 ```
 
 Bad CHANGELOG entry:
 
 ```text
-- 2026-06-28 - [scene_routing] Modified SceneRouter, updated tests, changed TODO, and moved plan files
+- 2026-06-28 - [routing] Modified routing code, updated tests, changed TODO, and moved plan files
 ```
 
 Good PR Changes section:
 
 ```text
-- Add route payload validation before scene changes
-- Gate invalid route feedback through Debug so release builds stay quiet
+- Add route payload validation before navigation changes
+- Route invalid destination feedback through the established diagnostics boundary
 ```
 
 Bad PR Changes section:

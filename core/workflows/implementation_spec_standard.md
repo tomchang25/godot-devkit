@@ -2,6 +2,8 @@
 
 Use this standard to produce the final implementation handoff: a codebase-verified document that tells an implementation agent exactly what to change, what order to land it in, what relationships must be preserved, and what observable behavior proves completion. In conversation and in other documents, "spec" is always short for implementation spec.
 
+`work_lifecycle.md` owns the transitions into implementation and onward to verification and closeout. This file owns only the implementation spec artifact's required content and quality.
+
 An implementation spec is not a plan and not a sketch. A plan owns durable product/design intent. A sketch may explore a plan child before the final handoff. The spec is written last, against the codebase as it exists at that moment, and is the only document intended to be executed directly.
 
 ## Lifecycle Position

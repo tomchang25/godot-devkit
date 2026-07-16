@@ -2,29 +2,35 @@
 
 ## Required Load Order
 
-This repository is the shared governance layer. In a consuming project:
+This repository is the shared governance foundation. In a consuming project:
 
 1. Read this file.
-2. Read `dev/foundation.profile` from the consuming project. If it names `action-rpg` or `sim-management`, read `dev/foundation/profiles/<profile>/profile_startup.md`.
-3. Read the consuming project's `dev/agent_rules/agent_startup.md` for its snapshot, environment, tools, and project-specific rules.
+2. Read `dev/foundation.config.json` when it exists. Load the selected platform startup from `dev/foundation/platforms/<platform>/platform_startup.md`, then load every selected profile startup from `dev/foundation/profiles/<profile>/profile_startup.md`.
+3. For a legacy consumer with only `dev/foundation.profile`, treat the platform as `godot`; load `dev/foundation/platforms/godot/platform_startup.md`, then load the named profile unless its value is `core`.
+4. Read the consuming project's `dev/agent_rules/agent_startup.md` for its snapshot, environment, tools, permissions, verification commands, and explicit project-local overrides.
 
-When working inside `godot-template/base`, treat `base/` as the consuming project root. The same paths then resolve below `base/dev/`.
+When working inside a template subtree, treat the template's documented base directory as the consuming project root so the same `dev/` paths resolve below that base.
 
-If the submodule is missing or uninitialized, stop repository-specific work and ask for `git submodule update --init --recursive`. Shared rules must not be guessed from compatibility pointer files.
+If the foundation submodule is missing or uninitialized, stop repository-specific work and ask for `git submodule update --init --recursive`. Shared rules must not be guessed from local compatibility pointers.
 
 ## Precedence
 
-Core rules are the default. A selected profile may add paradigm-specific rules. A consuming project may add project-specific detail or explicitly supersede a default when its architecture requires it. A later layer must state the conflict and replacement directly; silence does not override an earlier rule.
+Load layers in this order:
 
-Do not copy a shared rule into a consuming project. Keep compatibility files as one-line pointers and edit the canonical file here.
+```text
+core -> platform -> profiles in declared order -> consuming project
+```
+
+Core rules are the default. A later layer may add narrower detail or explicitly supersede an earlier default when its scope requires a different contract. A superseding layer must name the conflict and replacement directly; silence does not override an earlier rule.
+
+Do not copy a shared rule into a consuming project. Keep compatibility files as pointers and place only the project-specific delta in a local addendum.
 
 ## Shared Triggers
 
-- Adding, renaming, or restructuring GDScript: read `core/standards/gdscript_structure_standard.md` and `core/standards/naming_conventions.md`.
-- Creating scenes, node references, or runtime children: read `core/standards/scene_node_source_standard.md` and, for reusable components, `core/standards/component_scene_standard.md`.
-- Introducing a Controller, System, Store, Service, manager, or save provider: read `core/standards/runtime_ownership.md` plus the selected profile.
-- Changing navigation, settings, debug behavior, error guards, registries, theme, or audio: read the matching standard and skill under `core/` before editing.
-- Creating plans, sketches, specs, reviews, PR text, or closeout summaries: follow the matching file under `core/workflows/` and `core/standards/change_summary_standard.md`.
-- Before release or compatibility assessment: read `core/skills/semantic_versioning.md`.
+- Before adding, moving, or classifying governance documents, read `core/standards/governance_structure_standard.md`.
+- Before introducing a Controller, System, Store, Service, manager, save provider, or another runtime state owner, read `core/standards/runtime_ownership.md` plus the selected profiles and relevant project-local standards.
+- Before changing a persisted schema or compatibility promise, read `core/agent_rules/save_migrations.md` plus the platform and project-local persistence contracts.
+- Before creating or updating plans, sketches, implementation specs, reviews, closeouts, PR text, or change summaries, read `core/workflows/work_lifecycle.md`, the matching workflow, and `core/standards/change_summary_standard.md` where a delivered outcome is being summarized.
+- Before release or compatibility assessment, read `core/skills/semantic_versioning.md`.
 
-Project-local startup rules decide which tests, linters, generated-data commands, and sandbox procedures are available. Core documentation must not invent those project-specific commands.
+Platform and project-local startup rules add triggers for source formats, runtime APIs, tests, linters, generated data, sandbox procedures, and build commands. Core documentation must not invent those execution details.

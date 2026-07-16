@@ -2,6 +2,8 @@
 
 Use this standard to produce a durable, high-level feature plan — the stable design artifact for a feature.
 
+`work_lifecycle.md` owns the transitions into and out of a plan. This file owns only the plan artifact's required content and quality.
+
 A Plan defines **what** a feature is, **why** it exists, and **how it behaves**. It never specifies **where** (files) or **how it is wired** (functions, classes). Child sketches (`sketch_standard.md`) are the normal way to explore non-trivial child slices before execution, and implementation specs (`implementation_spec_standard.md`) turn the selected slice into verified executable work. Keeping the Plan free of code coordinates is deliberate: it stays valid as the codebase changes, while the spec stage re-maps the design onto the live code right before implementation.
 
 Use this for:

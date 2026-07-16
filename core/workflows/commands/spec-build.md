@@ -2,7 +2,7 @@
 
 Build the final codebase-verified implementation spec for a focused work item, then update the source document and tracking pointers so the spec is the only actionable implementation handoff.
 
-This command writes documentation only. It does not implement code, stage changes, commit, push, create a PR, or run engine validation.
+This command writes documentation only. It does not implement code, stage changes, commit, push, create a PR, or run implementation validation.
 
 ## Input
 
@@ -46,7 +46,7 @@ Before any edit:
    - When an actionable probe or standalone sketch is converted, remove it from active `dev/docs/plans/` after the spec and pointers are complete. Archive it only when its historical discussion remains useful; otherwise delete it. Never leave two active sources of truth for the same work.
    - When building directly from a feature request with no source file, create only the required spec and lifecycle pointer.
 5. Search the updated parent, `TODO.md`, and `dev/docs/plans/` for stale references to the replaced source filename or document form. Fix only references owned by this lifecycle transition.
-6. Run `python dev/tools/lint_standards.py --files <every changed Markdown file>` and correct all reported violations.
+6. Run the consuming project's documentation verification contract from `dev/agent_rules/lint_before_finish.md` against every changed governance, tracking, and planning file, then correct all reported violations.
 7. Inspect the final diff and report the created spec, replaced or archived source, pointer updates, locked behavioral decisions captured, and lint result. Do not claim implementation is complete.
 
 ## Guardrails
@@ -57,7 +57,7 @@ Before any edit:
 - Do not duplicate parent requirements in a child spec or give a child its own TODO pointer.
 - Do not add speculative future scope, incidental cleanup, new systems, assets, VFX, audio, tests, or migrations unless the approved behavior and verified blast radius require them.
 - Do not preserve legacy names, compatibility paths, or old files when the approved scope explicitly removes them, unless live external consumers establish a compatibility requirement.
-- Do not run `/godot-test`, project tests, formatters, or implementation validation for a documentation-only spec build.
+- Do not run platform runtime checks, project tests, mutating formatters, or implementation validation for a documentation-only spec build unless the consumer's documentation contract explicitly requires one.
 - Keep unrelated user changes untouched.
 
 $ARGUMENTS

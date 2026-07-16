@@ -5,10 +5,10 @@ Use this standard when a command asks for a code review of a change scope. The c
 ## Review Inputs
 
 1. Identify the changed files from the calling command's scope.
-2. Read the full current contents of every changed source, scene, data, test, and workflow file in scope. Do not limit review to diff hunks.
+2. Read the full current contents of every changed source, configuration, data, test, documentation, and workflow file in scope. Do not limit review to diff hunks.
 3. Read the relevant diff for each changed file to understand what changed and why.
 4. If a plan/spec is part of the scope, or the calling command identifies one, review against every requirement, implementation note, edge case, and acceptance criterion.
-5. Pull in nearby or referenced codebase context whenever the changed file depends on another script, scene, resource, registry, save path, signal, data ID, command workflow, or standard.
+5. Pull in nearby or referenced repository context whenever the changed file depends on another module, artifact, schema, registry, persisted key, event, identifier, command workflow, or standard.
 
 ## Review Depth
 
@@ -17,15 +17,15 @@ Review findings are not limited to modified lines. Treat the full changed file a
 For every changed file, check for:
 
 1. Behavioral bugs, regressions, missing edge cases, and incorrect assumptions.
-2. Stale references to renamed or removed APIs, constants, data IDs, node paths, signals, resource paths, imports, workflow steps, or documentation claims.
+2. Stale references to renamed or removed APIs, constants, identifiers, artifact paths, events, imports, workflow steps, or documentation claims.
 3. Redundant or divergent old logic left beside the new path, including unused helpers, duplicate guards, obsolete adapters, dead branches, and comments/TODOs that no longer match behavior.
-4. Robustness gaps for null, empty, missing, invalid, duplicated, out-of-order, lifecycle, initialization, save/load, migration, and resource-loading cases.
+4. Robustness gaps for null, empty, missing, invalid, duplicated, out-of-order, lifecycle, initialization, persistence, migration, and dependency-loading cases.
 5. Standards violations from `dev/standards/`, command workflow violations from `dev/workflows/`, and agent rule violations from `dev/agent_rules/` that apply to the changed files.
 6. Missing or weakened tests, fixtures, data coverage, validation, or lint coverage where the change creates meaningful risk.
 
 ## Related Codebase Search
 
-Search beyond the changed files when the diff introduces, removes, renames, or changes behavior for any public or cross-file concept. Examples include method names, signal names, constants, resource IDs, save keys, scene paths, YAML fields, registry APIs, command names, and documented workflows.
+Search beyond the changed files when the diff introduces, removes, renames, or changes behavior for any public or cross-file concept. Examples include method names, event names, constants, content IDs, persisted keys, routes, schema fields, registry APIs, command names, and documented workflows.
 
 Use the search to answer:
 
@@ -38,7 +38,7 @@ Use the search to answer:
 
 Report findings first, ordered by severity. Include file and line references when possible.
 
-Use English for every report section except `Summary`, unless the user explicitly asks for another language. Write `Summary` in Traditional Chinese.
+Write the report in the user's language unless the user requests another language. Keep code identifiers, paths, command names, severity labels, and required verdict labels exact.
 
 Use this verdict language:
 
@@ -62,7 +62,7 @@ The report must include:
 3. A stale/redundant check result.
 4. A robustness check result.
 5. Standards, lint, or test checks that were run, plus any checks that were skipped and why.
-6. A final `Summary` section, written in Traditional Chinese, that briefly states the overall review reasoning, the reviewer's assessment of the update, any notable non-blocking risks or thoughts, or says there is nothing else worth calling out.
+6. A final `Summary` section that briefly states the overall review reasoning, the reviewer's assessment of the update, any notable non-blocking risks or thoughts, or says there is nothing else worth calling out.
 7. The final verdict, included inside `Summary` as `Verdict: ` followed by one of the required verdict labels.
 
 Do not add a separate `Final Verdict` section; `Summary` is the final section and owns the verdict.
