@@ -20,7 +20,7 @@ profiles/
   sim-management/             Store/System management architecture; currently constrained to Godot
 ```
 
-`core/standards/governance_structure_standard.md` is the canonical owner for placement, language, extension, README, pointer, and addendum rules. This README is a navigation and installation surface only.
+`core/standards/governance_structure_standard.md` is the canonical owner for placement, language, extension, README, ownership, and addendum rules. This README is a navigation and installation surface only.
 
 The load order is:
 
@@ -53,7 +53,7 @@ A Web React consumer without an architecture profile uses:
 }
 ```
 
-The selected platform is required. Profiles are optional and ordered. The consumer verifier rejects unknown platforms, duplicate profiles, unsupported platform/profile combinations, missing canonical documents, competing pointers, and local shared-rule forks.
+The selected platform is required. Profiles are optional and ordered. The consumer verifier rejects unknown platforms, duplicate profiles, unsupported platform/profile combinations, and missing selected startup documents.
 
 ## Consumer Layout
 
@@ -62,9 +62,9 @@ dev/
   foundation/                 This repository, pinned to one commit
   foundation.config.json      Selected platform and profiles
   agent_rules/                Project-local environment, permissions, and commands
-  standards/                  Project standards and compatibility pointers
-  workflows/                  Compatibility pointers and project-only commands
-  skills/                     Compatibility pointers and project-only hazard cards
+  standards/                  Project-only standards and shared-rule addenda
+  workflows/                  Project-only workflows and commands
+  skills/                     Project-only recipes and hazard cards
   docs/                       Product design, plans, reports, and archives
   tools/                      Project-owned executable tooling
 ```
@@ -78,7 +78,7 @@ Template repositories may install the foundation below a documented base subtree
 - Reusable architecture and game-paradigm conventions belong in `profiles/<profile>/`; a platform-dependent profile declares the constraint in `consumer_manifest.json`.
 - Product rules, runtime owners, schemas, executable commands, permissions, active plans, and historical context belong in the consuming project.
 
-A consuming project keeps shared discovery paths as compatibility pointers. It never copies and maintains local forks of shared rule text.
+A consuming project reads shared rules directly from the canonical paths under its pinned `dev/foundation` submodule. It never copies and maintains local forks of shared rule text.
 
 ## Work Lifecycle
 
@@ -136,7 +136,9 @@ git -C dev/foundation checkout vX.Y.Z
 python dev/foundation/tools/verify_consumer.py --root .
 ```
 
-When upgrading from a pre-schema-2 consumer, create `dev/foundation.config.json` and update local compatibility pointers to the canonical paths declared by the selected layers before running the verifier. Review, commit, and push the submodule pointer and consumer migration from the consuming project.
+When upgrading from a pre-schema-2 consumer, create `dev/foundation.config.json` before running the verifier.
+
+When upgrading from v0.4.x to v0.5.0, remove consumer files whose only purpose is to provide a `# Shared Foundation Pointer` compatibility path. Keep project-owned rules and addenda, which may link directly to their canonical owners under `dev/foundation`. No compatibility files need to be recreated. Review, commit, and push the submodule pin and consumer migration from the consuming project.
 
 ## Verification
 
@@ -153,7 +155,7 @@ python tools/verify_canonical_contracts.py
 python tools/test_verify_consumer.py
 ```
 
-The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, platform manifest coverage, profile constraints, and canonical targets. Schema-2 fixtures cover both Godot and Web React consumers.
+The canonical verifier protects semantic baselines, English shared-governance language, core workflow platform neutrality, layer startup paths, and profile constraints. Schema-2 fixtures cover both Godot and Web React consumers.
 
 ## Canonical Baseline Policy
 

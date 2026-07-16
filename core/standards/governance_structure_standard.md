@@ -59,13 +59,11 @@ Project-local rules may refine shared defaults and may explicitly supersede them
 
 Every governance rule has exactly one canonical owner.
 
-- A compatibility pointer names the canonical file and contains no competing rule text.
+- A consumer reads canonical files directly from its pinned foundation instead of recreating them at compatibility paths.
 - An addendum contains only the narrower platform, profile, or project-specific delta and links to the earlier owner.
 - A README indexes canonical owners and explains how to enter the governance system. It does not become a second source of truth.
 - A startup file defines load order and trigger-based reading. It links to standards instead of restating their full contracts.
-- A manifest records machine-checkable layer availability, compatibility pointers, profile constraints, and startup paths. It does not replace the human-readable standard.
-
-Legacy shims may preserve an old canonical path during a migration. A shim must be visibly marked as transitional, point to exactly one new canonical owner, and contain no normative content beyond the migration instruction.
+- A manifest records machine-checkable layer availability, profile constraints, and startup paths. It does not replace the human-readable standard.
 
 ## Governance Artifact Placement
 
@@ -90,7 +88,7 @@ Before adding or moving a governance document, answer in order:
 2. Does the remaining contract require a concrete runtime, framework, file format, or platform API? If yes, place that delta in the platform.
 3. Does it describe a reusable game architecture or paradigm rather than a technology? If yes, place it in a profile and declare any unavoidable platform constraint.
 4. Does it depend on one product, repository layout, tool command, schema, or permission model? If yes, keep it project-local.
-5. Does another document already own the rule? If yes, update that owner and add only a pointer or explicit addendum here.
+5. Does another document already own the rule? If yes, update that owner and add only a direct link or explicit addendum here.
 
 When classification remains ambiguous, prefer the narrowest existing canonical owner that avoids duplication. Do not create a new layer or parallel standard for a hypothetical future consumer.
 
@@ -102,7 +100,6 @@ Changes to governance structure must update every affected discovery and verific
 - README navigation.
 - `consumer_manifest.json`.
 - Canonical and consumer verifiers.
-- Compatibility pointers or migration shims.
 - Release notes when the public consumer contract changes.
 
-A structural refactor is incomplete while an old path still appears canonical, a new owner is undiscoverable, or a verifier accepts competing rule text.
+A structural refactor is incomplete while an old path still appears canonical, a new owner is undiscoverable, or layer startup cannot reach the current owner.

@@ -274,36 +274,6 @@ def verify_core_workflows(errors: list[str]) -> None:
                 errors.append(f"platform-specific workflow contract leaked into {relative}: {term!r}")
 
 
-def verify_pointer_entries(
-    *,
-    entries: Any,
-    expected_prefix: str,
-    errors: list[str],
-) -> set[str]:
-    local_paths: set[str] = set()
-    if not isinstance(entries, list):
-        errors.append(f"manifest pointers for {expected_prefix} must be an array")
-        return local_paths
-
-    for entry in entries:
-        if not isinstance(entry, dict):
-            errors.append(f"invalid pointer entry for {expected_prefix}: {entry!r}")
-            continue
-        local = entry.get("local")
-        canonical = entry.get("canonical")
-        if not isinstance(local, str) or not isinstance(canonical, str):
-            errors.append(f"invalid pointer paths for {expected_prefix}: {entry!r}")
-            continue
-        if local in local_paths:
-            errors.append(f"duplicate local pointer in {expected_prefix}: {local}")
-        local_paths.add(local)
-        if not canonical.startswith(expected_prefix):
-            errors.append(f"pointer escapes {expected_prefix}: {local} -> {canonical}")
-        if not (ROOT / canonical).is_file():
-            errors.append(f"manifest points to missing canonical document: {canonical}")
-    return local_paths
-
-
 def verify_manifest(errors: list[str]) -> None:
     manifest = load_manifest(errors)
     if not manifest:
@@ -318,11 +288,6 @@ def verify_manifest(errors: list[str]) -> None:
     core_startup = core.get("startup")
     if not isinstance(core_startup, str) or not (ROOT / core_startup).is_file():
         errors.append("consumer manifest core startup is missing")
-    core_local = verify_pointer_entries(
-        entries=core.get("compatibility_pointers"),
-        expected_prefix="core/",
-        errors=errors,
-    )
 
     platforms = manifest.get("platforms", {})
     if not isinstance(platforms, dict) or not platforms:
@@ -335,29 +300,6 @@ def verify_manifest(errors: list[str]) -> None:
         startup = entry.get("startup")
         if not isinstance(startup, str) or not (ROOT / startup).is_file():
             errors.append(f"missing platform startup: {platform!r}")
-        local_paths = verify_pointer_entries(
-            entries=entry.get("compatibility_pointers"),
-            expected_prefix=f"platforms/{platform}/",
-            errors=errors,
-        )
-        declared_canonicals = {
-            pointer.get("canonical")
-            for pointer in entry.get("compatibility_pointers", [])
-            if isinstance(pointer, dict) and isinstance(pointer.get("canonical"), str)
-        }
-        platform_root = ROOT / "platforms" / platform
-        actual_canonicals = {
-            path.relative_to(ROOT).as_posix()
-            for path in platform_root.rglob("*.md")
-            if path.relative_to(platform_root).as_posix() != "platform_startup.md"
-        }
-        for canonical in sorted(actual_canonicals - declared_canonicals):
-            errors.append(f"platform canonical is missing from the manifest: {canonical}")
-        for canonical in sorted(declared_canonicals - actual_canonicals):
-            errors.append(f"platform manifest entry has no canonical file: {canonical}")
-        overlap = core_local.intersection(local_paths)
-        for local in sorted(overlap):
-            errors.append(f"core and platform pointers compete for dev/{local}")
     profiles = manifest.get("profiles", {})
     if not isinstance(profiles, dict):
         errors.append("consumer manifest profiles entry must be an object")

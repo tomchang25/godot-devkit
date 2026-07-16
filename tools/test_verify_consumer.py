@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise schema-2 consumer verification with generated temporary consumers."""
+"""Exercise schema-2 consumer configuration with generated temporary consumers."""
 
 from __future__ import annotations
 
@@ -12,18 +12,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFEST = json.loads((ROOT / "consumer_manifest.json").read_text(encoding="utf-8"))
 VERIFIER = ROOT / "tools" / "verify_consumer.py"
-
-
-def write_pointer(dev: Path, entry: dict[str, str]) -> None:
-    path = dev / entry["local"]
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        "# Shared Foundation Pointer\n\n"
-        f"Canonical document: `dev/foundation/{entry['canonical']}`.\n",
-        encoding="utf-8",
-    )
 
 
 def run_verifier(root: Path) -> subprocess.CompletedProcess[str]:
@@ -43,15 +32,6 @@ def build_consumer(root: Path, config: dict[str, Any]) -> None:
         encoding="utf-8",
     )
 
-    platform = config["platform"]
-    entries = [
-        *MANIFEST["core"]["compatibility_pointers"],
-        *MANIFEST["platforms"][platform]["compatibility_pointers"],
-    ]
-    for entry in entries:
-        write_pointer(dev, entry)
-
-
 def main() -> int:
     failures: list[str] = []
 
@@ -69,16 +49,6 @@ def main() -> int:
         valid = run_verifier(root)
         if valid.returncode != 0 or "foundation: OK (godot; action-rpg" not in valid.stdout:
             failures.append(f"valid schema-2 consumer failed:\n{valid.stdout}{valid.stderr}")
-
-        pointer = root / "dev" / "workflows" / "work_lifecycle.md"
-        pointer.write_text(
-            "# Shared Foundation Pointer\n\n"
-            "Canonical document: `dev/foundation/core/workflows/wrong.md`.\n",
-            encoding="utf-8",
-        )
-        invalid_pointer = run_verifier(root)
-        if invalid_pointer.returncode == 0 or "wrong canonical target" not in invalid_pointer.stdout:
-            failures.append("wrong schema-2 canonical target was not rejected")
 
     with tempfile.TemporaryDirectory(prefix="game-devkit-web-consumer-") as directory:
         root = Path(directory)
@@ -105,7 +75,7 @@ def main() -> int:
             print(f"consumer-test: ERROR: {failure}")
         return 1
 
-    print("consumer-test: OK (Godot and Web React schema-2 fixtures plus invalid configuration and target)")
+    print("consumer-test: OK (Godot and Web React schema-2 fixtures plus invalid configuration)")
     return 0
 
 

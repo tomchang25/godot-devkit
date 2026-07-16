@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- Remove `compatibility_pointers` from the consumer manifest and stop requiring duplicated discovery files under consumer `dev/` paths.
+- Limit consumer verification to foundation configuration, selected layer startup documents, and platform/profile compatibility.
+- Require v0.4.x consumers to delete legacy `# Shared Foundation Pointer`-only files during upgrade while preserving project-owned rules and addenda.
+
 ## 0.4.1
 
 - Remove legacy Godot `core/` platform-pointer shims and require schema-2 `foundation.config.json` consumers to select their platform explicitly.

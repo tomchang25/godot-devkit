@@ -10,7 +10,7 @@ This repository is the shared governance foundation. In a consuming project:
 
 When working inside a template subtree, treat the template's documented base directory as the consuming project root so the same `dev/` paths resolve below that base.
 
-If the foundation submodule is missing or uninitialized, stop repository-specific work and ask for `git submodule update --init --recursive`. Shared rules must not be guessed from local compatibility pointers.
+If the foundation submodule is missing or uninitialized, stop repository-specific work and ask for `git submodule update --init --recursive`. Shared rules must not be guessed from consumer-local files.
 
 ## Precedence
 
@@ -22,7 +22,7 @@ core -> platform -> profiles in declared order -> consuming project
 
 Core rules are the default. A later layer may add narrower detail or explicitly supersede an earlier default when its scope requires a different contract. A superseding layer must name the conflict and replacement directly; silence does not override an earlier rule.
 
-Do not copy a shared rule into a consuming project. Keep compatibility files as pointers and place only the project-specific delta in a local addendum.
+Do not copy a shared rule into a consuming project. Read it directly from the pinned foundation and place only the project-specific delta in a local addendum.
 
 ## Shared Triggers
 

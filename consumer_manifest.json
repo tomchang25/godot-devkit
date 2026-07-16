@@ -2,74 +2,14 @@
   "schema_version": 2,
   "config_path": "dev/foundation.config.json",
   "core": {
-    "startup": "core/agent_rules/foundation_startup.md",
-    "compatibility_pointers": [
-      { "local": "agent_rules/lint_before_finish.md", "canonical": "core/agent_rules/lint_before_finish.md" },
-      { "local": "agent_rules/save_migrations.md", "canonical": "core/agent_rules/save_migrations.md" },
-      { "local": "skills/conventional_commits.md", "canonical": "core/skills/conventional_commits.md" },
-      { "local": "skills/pr_convention.md", "canonical": "core/skills/pr_convention.md" },
-      { "local": "skills/semantic_versioning.md", "canonical": "core/skills/semantic_versioning.md" },
-      { "local": "standards/change_summary_standard.md", "canonical": "core/standards/change_summary_standard.md" },
-      { "local": "standards/governance_structure_standard.md", "canonical": "core/standards/governance_structure_standard.md" },
-      { "local": "standards/persistence_standard.md", "canonical": "core/standards/persistence_standard.md" },
-      { "local": "workflows/probe_standard.md", "canonical": "core/workflows/probe_standard.md" },
-      { "local": "standards/runtime_ownership.md", "canonical": "core/standards/runtime_ownership.md" },
-      { "local": "workflows/closeout_standard.md", "canonical": "core/workflows/closeout_standard.md" },
-      { "local": "workflows/implementation_spec_standard.md", "canonical": "core/workflows/implementation_spec_standard.md" },
-      { "local": "workflows/plan_standard.md", "canonical": "core/workflows/plan_standard.md" },
-      { "local": "workflows/review_standard.md", "canonical": "core/workflows/review_standard.md" },
-      { "local": "workflows/sketch_standard.md", "canonical": "core/workflows/sketch_standard.md" },
-      { "local": "workflows/work_lifecycle.md", "canonical": "core/workflows/work_lifecycle.md" },
-      { "local": "workflows/commands/closeout.md", "canonical": "core/workflows/commands/closeout.md" },
-      { "local": "workflows/commands/commit-msg.md", "canonical": "core/workflows/commands/commit-msg.md" },
-      { "local": "workflows/commands/pr-review.md", "canonical": "core/workflows/commands/pr-review.md" },
-      { "local": "workflows/commands/research-context.md", "canonical": "core/workflows/commands/research-context.md" },
-      { "local": "workflows/commands/spec-build.md", "canonical": "core/workflows/commands/spec-build.md" },
-      { "local": "workflows/commands/spec-discuss.md", "canonical": "core/workflows/commands/spec-discuss.md" },
-      { "local": "workflows/commands/stage-review.md", "canonical": "core/workflows/commands/stage-review.md" }
-    ]
+    "startup": "core/agent_rules/foundation_startup.md"
   },
   "platforms": {
     "godot": {
-      "startup": "platforms/godot/platform_startup.md",
-      "compatibility_pointers": [
-        { "local": "skills/audio_event_usage.md", "canonical": "platforms/godot/skills/audio_event_usage.md" },
-        { "local": "skills/debug_mode_usage.md", "canonical": "platforms/godot/skills/debug_mode_usage.md" },
-        { "local": "skills/gdscript_abstract.md", "canonical": "platforms/godot/skills/gdscript_abstract.md" },
-        { "local": "skills/gdscript_const_vs_static_var.md", "canonical": "platforms/godot/skills/gdscript_const_vs_static_var.md" },
-        { "local": "skills/godot_cross_os_mount_hazard.md", "canonical": "platforms/godot/skills/godot_cross_os_mount_hazard.md" },
-        { "local": "skills/godot4_autoload_lookup.md", "canonical": "platforms/godot/skills/godot4_autoload_lookup.md" },
-        { "local": "skills/godot4_theme_override.md", "canonical": "platforms/godot/skills/godot4_theme_override.md" },
-        { "local": "skills/godot4_tscn_format_triage.md", "canonical": "platforms/godot/skills/godot4_tscn_format_triage.md" },
-        { "local": "skills/godot4_tscn_node_properties.md", "canonical": "platforms/godot/skills/godot4_tscn_node_properties.md" },
-        { "local": "skills/scene_router_usage.md", "canonical": "platforms/godot/skills/scene_router_usage.md" },
-        { "local": "skills/settings_overlay_usage.md", "canonical": "platforms/godot/skills/settings_overlay_usage.md" },
-        { "local": "skills/state_machine_pattern.md", "canonical": "platforms/godot/skills/state_machine_pattern.md" },
-        { "local": "standards/component_scene_standard.md", "canonical": "platforms/godot/standards/component_scene_standard.md" },
-        { "local": "standards/debug_standard.md", "canonical": "platforms/godot/standards/debug_standard.md" },
-        { "local": "standards/error_guard_standard.md", "canonical": "platforms/godot/standards/error_guard_standard.md" },
-        { "local": "standards/gdscript_structure_standard.md", "canonical": "platforms/godot/standards/gdscript_structure_standard.md" },
-        { "local": "standards/naming_conventions.md", "canonical": "platforms/godot/standards/naming_conventions.md" },
-        { "local": "standards/registries.md", "canonical": "platforms/godot/standards/registries.md" },
-        { "local": "standards/scene_node_source_standard.md", "canonical": "platforms/godot/standards/scene_node_source_standard.md" },
-        { "local": "standards/scene_routing_standard.md", "canonical": "platforms/godot/standards/scene_routing_standard.md" },
-        { "local": "standards/settings_overlay_standard.md", "canonical": "platforms/godot/standards/settings_overlay_standard.md" },
-        { "local": "standards/theme_standard.md", "canonical": "platforms/godot/standards/theme_standard.md" }
-      ]
+      "startup": "platforms/godot/platform_startup.md"
     },
     "web-react": {
-      "startup": "platforms/web-react/platform_startup.md",
-      "compatibility_pointers": [
-        { "local": "skills/indexeddb-upgrade-transactions.md", "canonical": "platforms/web-react/skills/indexeddb-upgrade-transactions.md" },
-        { "local": "skills/react-strict-mode-effects.md", "canonical": "platforms/web-react/skills/react-strict-mode-effects.md" },
-        { "local": "skills/service-worker-cache-versioning.md", "canonical": "platforms/web-react/skills/service-worker-cache-versioning.md" },
-        { "local": "standards/browser_persistence_standard.md", "canonical": "platforms/web-react/standards/browser_persistence_standard.md" },
-        { "local": "standards/naming_conventions.md", "canonical": "platforms/web-react/standards/naming_conventions.md" },
-        { "local": "standards/react_component_standard.md", "canonical": "platforms/web-react/standards/react_component_standard.md" },
-        { "local": "standards/testing_standard.md", "canonical": "platforms/web-react/standards/testing_standard.md" },
-        { "local": "standards/web_accessibility_standard.md", "canonical": "platforms/web-react/standards/web_accessibility_standard.md" },
-        { "local": "standards/web_platform_standard.md", "canonical": "platforms/web-react/standards/web_platform_standard.md" }
-      ]
+      "startup": "platforms/web-react/platform_startup.md"
     }
   },
   "profiles": {
