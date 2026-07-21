@@ -131,6 +131,24 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "IndexedDB",
         "The consuming project owns its framework mode",
     ),
+    "platforms/web-react/standards/naming_conventions.md": (
+        "Directory names use `kebab-case`",
+        "Repository root directories are always singular",
+    ),
+    "platforms/web-react/standards/project_structure_standard.md": (
+        "Root directories use singular names",
+        "named `dist/`, never `build/`",
+        "that directory is named `model/`",
+        "Nothing imports `harness` except `app`",
+        "The boundary prose and the rule configuration change in the same commit",
+        "## Placement Test",
+    ),
+    "platforms/web-react/standards/command_surface_standard.md": (
+        "`npm run verify` is the one command",
+        "A script named `check` must not exist as an alternate aggregate gate",
+        "A stage's result is the exit status of its command",
+        "printWidth: 120",
+    ),
     "platforms/web-react/standards/react_component_standard.md": (
         "Rendering is pure",
         "List keys use stable domain or content identity",

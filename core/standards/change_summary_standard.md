@@ -15,7 +15,7 @@ Describe the durable outcome, not the paperwork or step-by-step mechanics.
 ## Scope By Artifact
 
 - Commit subject: conventional style, imperative or concise outcome phrase, no trailing period.
-- Commit body: 0-3 bullets by default, each bullet describing one logical outcome.
+- Commit body: 0-3 bullets by default, each bullet describing one logical outcome. The body ends at its final bullet and carries no authorship or attribution trailer.
 - PR title: conventional style, describing the PR as a whole rather than its largest commit.
 - PR description: summarize logical changes, not the raw commit list.
 - Review findings: state behavior risks, regressions, missing tests, or standards violations first; include file/line references when possible.

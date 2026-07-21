@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0
+
+- Add a canonical Web project structure standard: singular root vocabulary, `dist/` as the only generated-output directory, `test/unit` plus `test/e2e` placement, the shared source layer set with earned `presentation/` and `shared/`, and machine-checked import boundaries paired with their prose.
+- Add a Web command surface standard: required npm script names, the `npm run verify` aggregate gate with a canonical six-stage order, exit-status result determination, and one shared Prettier configuration.
+- Add directory naming rules to the Web naming conventions: kebab-case directories, singular conceptual groupings, plural instance collections, and always-singular repository roots.
+- Narrow the Web platform project boundary: repository layout and the verification command surface become platform-owned; framework mode, deployment target, and concrete tool selection remain project-owned.
+- Record that a commit body ends at its final bullet and carries no authorship or attribution trailer.
+- Make `lint_before_finish.md` reachable through a foundation startup trigger instead of directory browsing.
+
 ## 0.6.0
 
 - Require every consumer to own `agent_startup.md`, `git_operations.md`, and one authoritative `test_operations.md` contract.

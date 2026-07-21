@@ -2,6 +2,8 @@
 
 Platform: Web React.
 
+- Directory names use `kebab-case`.
+- A directory that groups a concept uses a singular name (`content/`, `model/`, `test/`); only a directory whose children are variants or instances of one thing uses a plural name (`enemies/`, `ports/`). Repository root directories are always singular — a plural root directory signals an instance collection that belongs under a narrower owner; see the Web project structure standard.
 - TypeScript source files use `kebab-case.ts`; files that contain JSX use `kebab-case.tsx`.
 - React components and exported types use `PascalCase`.
 - Functions, variables, parameters, and object properties use `camelCase` unless an external schema requires another spelling.
