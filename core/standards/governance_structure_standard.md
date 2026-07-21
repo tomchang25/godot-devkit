@@ -8,6 +8,10 @@ Canonical governance documents in `core/`, `platforms/`, and `profiles/` are wri
 
 Consuming projects may choose another language for product design, plans, reports, and project-local instructions. A project-local document that is promoted into shared governance must be translated into English as part of the promotion.
 
+## Document File Naming
+
+Governance and development documentation filenames use `snake_case`: lowercase words separated by underscores, with numeric ordering fields where a flow needs them (`port_08_c_wave_phase_orchestration`) and the artifact type as a dotted suffix (`.sketch.md`, `.implementation_spec.md`, `.probe.md`, `.addendum.md`). This applies to files under governance directories and consumer `dev/` documentation trees. Apply the rule to new documents; existing kebab-case filenames are renamed only in deliberate sweeps that update every inbound reference in the same change.
+
 ## Core-First Placement
 
 Place a governance contract in `core/` whenever its meaning can remain correct across engines, frameworks, operating environments, and game architectures. Generalize examples and execution details before concluding that a platform copy is necessary.

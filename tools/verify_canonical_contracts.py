@@ -33,6 +33,8 @@ REQUIRED: dict[str, tuple[str, ...]] = {
     "core/standards/governance_structure_standard.md": (
         "## Core-First Placement",
         "## Platform Placement",
+        "## Document File Naming",
+        "renamed only in deliberate sweeps",
         "README files provide navigation",
         "Every governance rule has exactly one canonical owner",
         "## Classification Checklist",
@@ -137,6 +139,9 @@ REQUIRED: dict[str, tuple[str, ...]] = {
     "platforms/web-react/standards/naming_conventions.md": (
         "Directory names use `kebab-case`",
         "Repository root directories are always singular",
+        "the export keeps its `PascalCase` name while the file stays `kebab-case`",
+        "dotted role suffix",
+        "the role is always visible in the name",
     ),
     "platforms/web-react/standards/project_structure_standard.md": (
         "Root directories use singular names",

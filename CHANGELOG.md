@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+
+- Require kebab-case filenames for all Web TypeScript sources including `PascalCase`-exporting classes and components, and codify the shared dotted role suffixes (`.test`, `.spec`, `.scenario`, `.module.css`, `.addendum.md`).
+- Require content and content-contract files to name a singular domain plus an explicit role suffix (`-definitions`, `-catalog`, `-schema`, `-validation`); bare domain-noun data files are retired.
+- Add a core document file naming rule: governance and `dev/` documentation filenames use `snake_case` with dotted artifact-type suffixes, applied to new documents and deliberate rename sweeps.
+
 ## 0.7.1
 
 - Fix canonical documents that referenced foundation-owned standards, skills, and workflows through consumer-local `dev/` paths, which resolved to nonexistent files inside consuming projects.

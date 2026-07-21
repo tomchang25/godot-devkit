@@ -39,6 +39,8 @@ Queued work with an agreed shape. Promote only the next eligible line to `## Act
 
 One line, no rationale, no backing document.
 
+- [doc_naming] Rename this repository's kebab-case command and skill filenames to snake_case in one sweep that updates every inbound startup, workflow, and verifier reference
+
 ---
 
 ## Bug
