@@ -12,6 +12,8 @@ Consuming projects may choose another language for product design, plans, report
 
 Governance and development documentation filenames use `snake_case`: lowercase words separated by underscores, with numeric ordering fields where a flow needs them (`port_08_c_wave_phase_orchestration`) and the artifact type as a dotted suffix (`.sketch.md`, `.implementation_spec.md`, `.probe.md`, `.addendum.md`). This applies to files under governance directories and consumer `dev/` documentation trees. Apply the rule to new documents; existing kebab-case filenames are renamed only in deliberate sweeps that update every inbound reference in the same change.
 
+Workflow command files are exempt: a command filename doubles as its invocable command name (`commit-msg.md` backs `/commit-msg`), and invocable names keep `kebab-case` per command-line convention.
+
 ## Core-First Placement
 
 Place a governance contract in `core/` whenever its meaning can remain correct across engines, frameworks, operating environments, and game architectures. Generalize examples and execution details before concluding that a platform copy is necessary.
@@ -70,6 +72,10 @@ Every governance rule has exactly one canonical owner.
 - A README indexes canonical owners and explains how to enter the governance system. It does not become a second source of truth.
 - A startup file defines load order and trigger-based reading. It links to standards instead of restating their full contracts.
 - A manifest records machine-checkable layer availability, profile constraints, and startup paths. It does not replace the human-readable standard.
+
+## Archived Artifact References
+
+A durable or evergreen document — a standard, skill, agent rule, workflow, or tracker — must never reference an archived artifact, and a still-forward plan, sketch, or spec should avoid it. Archives are pruned on a schedule, so any content a durable reader needs cannot live only in an archived file. When an artifact is archived, closeout lifts the still-needed content and its context into each referencing document rather than leaving, or merely repointing, a pointer into the archive.
 
 ## Governance Artifact Placement
 

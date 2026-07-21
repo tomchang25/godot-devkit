@@ -60,6 +60,10 @@ Project workflow commands may select and sequence layers, but they must link to 
 
 For Godot consumers, the former split between `godot_test_check.md` and `godot_tests.md` is forbidden because it creates competing owners for setup and execution. Consolidate their durable content into `test_operations.md`, update callers, then remove both legacy files.
 
+## Result Determination
+
+A verification layer's result is the exit status of its documented command, never an interpretation of its output. Piping a verification command through a filter replaces that exit status and discards the failure signal; run the documented command directly and read its complete result. Before reporting a suite as passing, reconcile its executed, passed, failed, and skipped counts against the total the suite declares; a pass claim based on a filtered or partial view of the output is invalid. Consumers continue to own the concrete commands, layers, and pass criteria; this invariant governs only how any layer's outcome is established.
+
 ## Templates And Scaffolding
 
 The manifest maps each required file to a tool-owned starter template. `tools/scaffold_consumer.py` renders the selected platform template into missing consumer paths and never overwrites an existing project-owned contract.

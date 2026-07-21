@@ -24,6 +24,7 @@ Run `git status` and `git branch --show-current`:
    - Keep bullets outcome-focused per the change-summary standard.
    - If the completed scope is dev-process-only maintenance, skip the CHANGELOG step. This includes closeout workflow changes, CHANGELOG/TODO edits, plan archival, and tracking cleanup.
 4. Remove each plan's one-line pointer from `TODO.md` `## Active` (or `## Plan` if it was queued). If `## Active` becomes empty, replace the section content with "Nothing currently in progress."
-5. Move each plan file and its sibling spec/sketch files from `dev/docs/plans/` to `dev/docs/archived/`.
-6. Run `git status` to show the final state.
-7. Suggest running `/commit-msg` to generate a commit message for the completed scope.
+5. Search the repository for references to each file being archived, by path and by title. For every reference in a durable document or the tracker, lift the still-needed content into the referencing document and remove or replace the reference per `core/workflows/closeout_standard.md`; never leave or repoint a durable reference at the archived path.
+6. Move each plan file and its sibling spec/sketch files from `dev/docs/plans/` to `dev/docs/archived/`.
+7. Run `git status` to show the final state.
+8. Suggest running `/commit-msg` to generate a commit message for the completed scope.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0
+
+- Forbid durable documents from referencing archived artifacts: closeout now finds a closing artifact's inbound references and lifts still-needed content into the referencing documents instead of leaving or repointing archive links.
+- State the result-determination invariant in core: a verification layer's result is its command's exit status, output filters that replace it are forbidden, and suite counts are reconciled against declared totals before a pass claim.
+- Promote golden-fixture discipline and the capability-not-variant browser-suite principle into the Web testing standard, and add a Web code style standard owning control-flow and logical-spacing conventions.
+- Rename the Web platform skills to snake_case and exempt workflow command filenames from the snake_case rule because they double as invocable command names.
+
 ## 0.8.1
 
 - Resolve the singular-root contradiction in the Web project structure standard: `assets/` is named as the one sanctioned plural root, kept for its universal ecosystem convention.

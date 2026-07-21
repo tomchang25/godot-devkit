@@ -17,5 +17,12 @@ Platform: Web React.
 - Snapshot tests do not replace assertions for important text, ARIA state, interaction, formulas, persistence, or migration outcomes.
 - Tests that touch IndexedDB, browser globals, service workers, timers, or global listeners isolate and clean up their ownership.
 - A production build does not replace focused component, application, or domain regression coverage.
+- Browser acceptance suites verify system capabilities, not per-content variants; a new content entry that reuses a proven capability does not add a browser test.
+
+## Golden Fixtures
+
+- A normal test run only asserts against committed golden fixtures and never rewrites them; a divergence stays failing until a human resolves it.
+- Regenerate a golden only through the consumer's dedicated update command, and only when the change under review intentionally alters a rule, a value, or content. Review the regenerated fixture line by line and name the behavioral change in the change summary.
+- Regenerating a golden to turn a failing test green without an intended behavior change defeats the gate: a determinism regression reaching a golden is a finding, not a formatting chore.
 
 The consumer owns the concrete runner, React test libraries, browser environment, build command, and required CI gates.

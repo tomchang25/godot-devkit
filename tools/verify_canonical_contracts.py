@@ -35,12 +35,16 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "## Platform Placement",
         "## Document File Naming",
         "renamed only in deliberate sweeps",
+        "doubles as its invocable command name",
+        "## Archived Artifact References",
         "README files provide navigation",
         "Every governance rule has exactly one canonical owner",
         "## Classification Checklist",
     ),
     "core/standards/consumer_operations_standard.md": (
         "## Required Files",
+        "## Result Determination",
+        "exit status of its documented command",
         "dev/agent_rules/agent_startup.md",
         "dev/agent_rules/git_operations.md",
         "dev/agent_rules/test_operations.md",
@@ -78,7 +82,12 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "## Child Closeout",
         "## Flow Closeout",
         "## Superseded Work",
+        "## Inbound References",
         "## Final Verification and Report",
+    ),
+    "core/workflows/commands/closeout.md": (
+        "references to each file being archived",
+        "never leave or repoint a durable reference at the archived path",
     ),
     "core/workflows/probe_standard.md": (
         "Status: Draft probe.",
@@ -181,8 +190,17 @@ REQUIRED: dict[str, tuple[str, ...]] = {
         "Application tests",
         "Component tests",
         "Build smoke",
+        "## Golden Fixtures",
+        "capabilities, not per-content variants",
     ),
-    "platforms/web-react/skills/indexeddb-upgrade-transactions.md": (
+    "platforms/web-react/standards/code_style_standard.md": (
+        "## Control Flow",
+        "uses braces, including a single statement",
+        "Do not add an `else` after a branch that always exits",
+        "## Logical Spacing",
+        "blanket blank-line rule",
+    ),
+    "platforms/web-react/skills/indexeddb_upgrade_transactions.md": (
         "versionchange",
         "upgrade transaction",
         "old payload",

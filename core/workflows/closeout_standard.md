@@ -36,6 +36,10 @@ When a main plan is complete:
 - Remove its active pointer or replace it with the single pointer to the new owner.
 - Never leave old and new executable handoffs active for the same scope.
 
+## Inbound References
+
+Before archiving any plan, sketch, or spec, find its inbound references across durable documents and the tracker. For each reference whose content the reader still needs, lift that content and its context into the referencing document, then remove or replace the reference. Never leave a durable document pointing into the archive, and never satisfy this rule by merely repointing a link at the archived path. The owning invariant is the archived-artifact reference rule in `core/standards/governance_structure_standard.md`.
+
 ## Final Verification and Report
 
 1. Search the tracker, parent plan, and active plan directory for stale pointers or competing authorities.
