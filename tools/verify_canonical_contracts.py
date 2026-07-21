@@ -145,6 +145,7 @@ REQUIRED: dict[str, tuple[str, ...]] = {
     ),
     "platforms/web-react/standards/project_structure_standard.md": (
         "Root directories use singular names",
+        "`assets/` is the one sanctioned exception",
         "named `dist/`, never `build/`",
         "that directory is named `model/`",
         "Nothing imports `harness` except `app`",

@@ -15,7 +15,7 @@ dist/       Generated build output; ignored by Git
 dev/        Pinned foundation, governance, documentation, and project tooling
 ```
 
-Root directories use singular names. A plural root directory indicates an instance collection that belongs under a narrower owner rather than at the repository root; see the directory naming rules in `naming_conventions.md`.
+Root directories use singular names. `assets/` is the one sanctioned exception, kept for its universal ecosystem convention. Any other plural root directory indicates an instance collection that belongs under a narrower owner rather than at the repository root; see the directory naming rules in `naming_conventions.md`.
 
 - `dist/` is exclusively the generated output of the production build command. The generated-output directory is named `dist/`, never `build/`, and Git ignores its contents. Build tooling source does not live there; it belongs under `dev/tools/` or the project's declared script tree. Source code and tools must not depend on a pre-existing `dist/`.
 - `assets/` is the library for references, editable source files, and unoptimized material. It sits outside the runtime module graph and is never imported by application code. Every runtime asset is copied or exported into `src/content/<feature>/assets/` and imported through source code so the bundler can fingerprint and package it.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- Resolve the singular-root contradiction in the Web project structure standard: `assets/` is named as the one sanctioned plural root, kept for its universal ecosystem convention.
+
 ## 0.8.0
 
 - Require kebab-case filenames for all Web TypeScript sources including `PascalCase`-exporting classes and components, and codify the shared dotted role suffixes (`.test`, `.spec`, `.scenario`, `.module.css`, `.addendum.md`).
