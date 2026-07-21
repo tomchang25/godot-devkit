@@ -15,6 +15,9 @@ MANIFEST_PATH = ROOT / "consumer_manifest.json"
 REQUIRED: dict[str, tuple[str, ...]] = {
     "core/agent_rules/foundation_startup.md": (
         "core -> platform -> profiles in declared order -> consuming project",
+        "## Path Resolution",
+        "resolves from the foundation repository root",
+        "always names a project-owned file",
         "foundation.config.json",
         "governance_structure_standard.md",
         "consumer_operations_standard.md",
@@ -249,6 +252,33 @@ CORE_WORKFLOW_PLATFORM_TERMS = (
 
 HAN_TEXT = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
 
+CONSUMER_AGENT_RULES = {"agent_startup.md", "git_operations.md", "test_operations.md"}
+DEV_PATH_REF = re.compile(r"`dev/(agent_rules|standards|skills|workflows|docs)/([A-Za-z0-9_./-]+\.md)`")
+
+
+def verify_path_conventions(errors: list[str]) -> None:
+    canonical_names: set[str] = set()
+    for layer in ("core", "platforms", "profiles"):
+        for path in (ROOT / layer).rglob("*.md"):
+            canonical_names.add(path.name)
+    for layer in ("core", "platforms", "profiles"):
+        for path in (ROOT / layer).rglob("*.md"):
+            text = path.read_text(encoding="utf-8")
+            relative = path.relative_to(ROOT).as_posix()
+            for match in DEV_PATH_REF.finditer(text):
+                directory, name = match.group(1), match.group(2)
+                base = name.rsplit("/", 1)[-1]
+                line = text.count("\n", 0, match.start()) + 1
+                if directory == "agent_rules":
+                    if base not in CONSUMER_AGENT_RULES:
+                        errors.append(
+                            f"consumer path names a non-consumer agent rule in {relative}:{line}: {match.group(0)}"
+                        )
+                elif directory != "docs" and base in canonical_names:
+                    errors.append(
+                        f"consumer path shadows a canonical document in {relative}:{line}: {match.group(0)}"
+                    )
+
 
 def load_manifest(errors: list[str]) -> dict[str, Any]:
     try:
@@ -394,6 +424,7 @@ def main() -> int:
     verify_required(errors)
     verify_language(errors)
     verify_core_workflows(errors)
+    verify_path_conventions(errors)
     verify_manifest(errors)
 
     if errors:

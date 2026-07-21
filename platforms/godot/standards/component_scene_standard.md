@@ -78,7 +78,7 @@ Allowed `visible = false` cases:
 
 - True popups, dialogs, overlays, and windows that are normally opened by `popup()` or a dedicated show method
 - Optional child affordances whose hidden state is the meaningful neutral preview, such as an inactive badge next to visible surrounding content
-- Debug-only nodes created by code behind a debug guard, per `dev/standards/scene_node_source_standard.md`
+- Debug-only nodes created by code behind a debug guard, per `platforms/godot/standards/scene_node_source_standard.md`
 
 If most of a component is hidden by default, reviewers should treat that as a smell: either the component is really a popup/overlay, or it needs a visible neutral preview state.
 
@@ -98,7 +98,7 @@ Do not seed global managers from a production component script. If a component n
 
 Reusable components must support `setup()` being called before or after `add_child()`.
 
-Use the standard shape from `dev/standards/gdscript_structure_standard.md`:
+Use the standard shape from `platforms/godot/standards/gdscript_structure_standard.md`:
 
 - `setup()` stores arguments into private state and does not touch `@onready` nodes directly
 - `_ready()` connects signals first, then calls `_apply()` if private state was already supplied
@@ -111,6 +111,6 @@ This keeps parent scenes free to instantiate, set up, connect, and add component
 
 # 7. Relationship To Other Standards
 
-Node ownership and runtime `add_child()` exceptions are governed by `dev/standards/scene_node_source_standard.md`.
+Node ownership and runtime `add_child()` exceptions are governed by `platforms/godot/standards/scene_node_source_standard.md`.
 
-Component declaration order, signal connection order, and the `setup()` / `_apply()` pattern are governed by `dev/standards/gdscript_structure_standard.md`.
+Component declaration order, signal connection order, and the `setup()` / `_apply()` pattern are governed by `platforms/godot/standards/gdscript_structure_standard.md`.

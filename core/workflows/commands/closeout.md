@@ -1,6 +1,6 @@
 Close out completed work: update CHANGELOG, TODO, archive plan/spec files, and suggest running `/commit-msg` for the final commit message.
 
-Read `dev/workflows/closeout_standard.md` and `dev/workflows/work_lifecycle.md` before mutating documentation or tracking. This command detects and processes the concrete scope; the standard owns closeout quality and the lifecycle owns transition gates.
+Read `core/workflows/closeout_standard.md` and `core/workflows/work_lifecycle.md` before mutating documentation or tracking. This command detects and processes the concrete scope; the standard owns closeout quality and the lifecycle owns transition gates.
 
 This command never stages, commits, pushes, creates PRs, or invokes `/pr-review`. It is a documentation cleanup workflow only.
 
@@ -16,7 +16,7 @@ Run `git status` and `git branch --show-current`:
 
 1. Identify the plan/spec file(s) in the completed scope (under `dev/docs/plans/`). Staged mode normally has exactly one; branch mode may have several — process each plan through steps 2–5. If none is found, ask which plan file(s) to use.
 2. Read each plan file to understand the completed scope and phases.
-3. Append a CHANGELOG entry per plan under `CHANGELOG.md`, following the rules in the file header and `dev/standards/change_summary_standard.md`:
+3. Append a CHANGELOG entry per plan under `CHANGELOG.md`, following the rules in the file header and `core/standards/change_summary_standard.md`:
    - Add entries under the current `## <version>` heading.
    - Group related entries under a `### <Title>` section matching the plan title.
    - Each bullet: `- YYYY-MM-DD — [scope] one-line summary`. Use today's date. No commit ref.

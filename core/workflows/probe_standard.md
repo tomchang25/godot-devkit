@@ -16,8 +16,8 @@ Use a probe for:
 
 Do not use a probe for:
 
-- A committed implementation handoff. Use `dev/workflows/implementation_spec_standard.md`.
-- A multi-phase feature plan. Use `dev/workflows/plan_standard.md`; use `dev/workflows/sketch_standard.md` only for optional child exploration under a plan.
+- A committed implementation handoff. Use `core/workflows/implementation_spec_standard.md`.
+- A multi-phase feature plan. Use `core/workflows/plan_standard.md`; use `core/workflows/sketch_standard.md` only for optional child exploration under a plan.
 - A current evergreen system description. Graduate the conclusion to `dev/docs/systems/` when the design locks.
 - A permanent decision memory that intentionally omits implementation detail. Use the decision-note format instead.
 

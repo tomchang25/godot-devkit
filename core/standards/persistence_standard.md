@@ -22,7 +22,7 @@ Additional integrity, slot, build, or content-version metadata belongs in the pr
 
 - Hydration reaches a settled success, absent-save, or explicit failure state before automatic writes may replace existing storage.
 - Writes occur at explicit checkpoints or through a bounded scheduler; rendering or frame frequency must not determine persistence frequency.
-- Payload migration is sequential and follows `dev/agent_rules/save_migrations.md`.
+- Payload migration is sequential and follows `core/agent_rules/save_migrations.md`.
 - Concurrent session or process ownership is explicitly defined before the project claims multi-session safety.
 - A storage failure preserves the in-memory session whenever safely possible and exposes persistence as unavailable or degraded; it must not silently replace an unreadable payload with defaults.
 - Offline or elapsed-time resolution starts from the last committed checkpoint and uses the project's canonical time-resolution contract.

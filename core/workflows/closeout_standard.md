@@ -39,7 +39,7 @@ When a main plan is complete:
 ## Final Verification and Report
 
 1. Search the tracker, parent plan, and active plan directory for stale pointers or competing authorities.
-2. Run the consuming project's applicable documentation and governance checks from `dev/agent_rules/lint_before_finish.md`.
+2. Run the consuming project's applicable documentation and governance checks from `core/agent_rules/lint_before_finish.md`.
 3. Inspect the final diff and keep unrelated user changes out of the closeout scope.
 4. Report the newly available outcome, durable architecture or schema decisions, checks that ran, migration version when applicable, and explicitly deferred work.
 

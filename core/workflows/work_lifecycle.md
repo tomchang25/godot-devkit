@@ -88,7 +88,7 @@ Implementation may adapt local technical details when the live code differs from
 Implementation is not complete until the consumer's verification contract has been satisfied:
 
 1. Run the focused checks named by the implementation spec or required by the changed behavior.
-2. Follow the consuming project's `dev/agent_rules/lint_before_finish.md` and any triggered platform or project-local validation rules.
+2. Follow `core/agent_rules/lint_before_finish.md` and any triggered platform or project-local validation rules.
 3. Return to implementation after a failure and rerun every affected check after the fix.
 4. Proceed only when acceptance criteria and required checks pass, or when the user explicitly accepts a documented verification gap.
 

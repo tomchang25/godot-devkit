@@ -68,7 +68,7 @@ python3 dev/tools/lint_standards.py --root /workspace --files /workspace/path/to
 git -C /workspace diff --check -- path/to/scene.tscn
 ```
 
-If the change affects actual UI placement and the result remains uncertain, use the safe `/tmp` Godot screenshot procedure from `dev/agent_rules/godot_screenshot_check.md` rather than running Godot against the mounted workspace.
+If the change affects actual UI placement and the result remains uncertain, use the safe screenshot procedure defined by the consuming project's `dev/agent_rules/test_operations.md` rather than running Godot against the mounted workspace.
 
 ---
 

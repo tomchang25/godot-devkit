@@ -341,7 +341,7 @@ Legacy padded or Unicode headers may remain in old files. When editing a file th
 
 # 10. Node Source Rule
 
-Node-source rules are defined in `dev/standards/scene_node_source_standard.md`.
+Node-source rules are defined in `platforms/godot/standards/scene_node_source_standard.md`.
 
 For this standard's scope, all persistent nodes in scenes, testbeds, and reusable UI components must be defined in `.tscn` and referenced from GDScript with `@onready`. Runtime-created nodes are allowed only for the permitted cases documented in the scene node source standard.
 

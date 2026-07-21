@@ -12,6 +12,10 @@ When working inside a template subtree, treat the template's documented base dir
 
 If the foundation submodule is missing or uninitialized, stop repository-specific work and ask for `git submodule update --init --recursive`. Shared rules must not be guessed from consumer-local files.
 
+## Path Resolution
+
+In canonical foundation documents, a path starting with `core/`, `platforms/`, or `profiles/` resolves from the foundation repository root — in a consuming project, below `dev/foundation/`; in a template, below the documented base subtree's `dev/foundation/`. A path starting with `dev/` (without `foundation/`) resolves from the consuming project root and always names a project-owned file, as do `TODO.md` and `CHANGELOG.md`. A canonical document must never reference a foundation-owned file through a consumer-local `dev/` path.
+
 ## Precedence
 
 Load layers in this order:

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.1
+
+- Fix canonical documents that referenced foundation-owned standards, skills, and workflows through consumer-local `dev/` paths, which resolved to nonexistent files inside consuming projects.
+- State the path resolution rule in the foundation startup: `core/`, `platforms/`, and `profiles/` paths resolve from the foundation root, while bare `dev/` paths always name project-owned files.
+- Extend the canonical verifier to reject consumer-path references that shadow canonical documents or name non-contract agent rules, and repoint the tscn triage skill at the consumer's `test_operations.md` for screenshots.
+
 ## 0.7.0
 
 - Add a canonical Web project structure standard: singular root vocabulary, `dist/` as the only generated-output directory, `test/unit` plus `test/e2e` placement, the shared source layer set with earned `presentation/` and `shared/`, and machine-checked import boundaries paired with their prose.

@@ -6,7 +6,7 @@ This document defines where scene nodes come from in `.tscn`-backed scenes and c
 
 Plain-language rule: do not dynamically build or instantiate persistent `.tscn` objects in GDScript unless there is a concrete runtime reason.
 
-For reusable component root sizing, previewable defaults, default visibility, and fixture/debug data boundaries, see `dev/standards/component_scene_standard.md`.
+For reusable component root sizing, previewable defaults, default visibility, and fixture/debug data boundaries, see `platforms/godot/standards/component_scene_standard.md`.
 
 Applies to:
 

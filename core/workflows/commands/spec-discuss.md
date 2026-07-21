@@ -19,7 +19,7 @@ Treat decisions already confirmed in the current conversation or explicitly lock
 Before discussing the target, read:
 
 1. `dev/agent_rules/agent_startup.md`.
-2. `dev/workflows/implementation_spec_standard.md`.
+2. `core/workflows/implementation_spec_standard.md`.
 3. The named source document and its parent plan, when either exists.
 4. The source artifact's workflow when it is a plan, sketch, or probe.
 5. `dev/docs/README.md` and every request-relevant rule, standard, system doc, or skill discovered from the target.
